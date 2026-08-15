@@ -14,173 +14,98 @@ def format_submissions(submissions: List[CodeSubmission]) -> str:
     return "\n\n".join(parts)
 
 
-def build_language_detection_prompt(target_language: str, code: str) -> str:
-    return f"""You are a programming language detector.
-Identify what programming language the following code is written in,
-and whether it matches the expected language.
+def build_unified_evaluation_prompt(
+    target_language: str = DEFAULT_TARGET_LANGUAGE,
+    ques_ans_content_with_inst: str = "",
+    summary_gen_flag: bool = True,
+) -> str:
+    return f"""You are an expert, rigorous, and deterministic automated code grader.
+Your task is to evaluate the submitted code strictly against the target programming language and question requirements.
 
-EXPECTED LANGUAGE: {target_language}
+EXPECTED TARGET LANGUAGE: {target_language}
 
-CODE:
-{code}
+SUBMISSIONS TO EVALUATE:
+{ques_ans_content_with_inst}
 
-Reply with ONLY this JSON (no markdown, no explanation):
+============================================================
+EVALUATION PROTOCOL & SCORING RULES (MANDATORY):
+============================================================
+
+1. LANGUAGE VALIDATION GATE:
+   - Check if the code is written in {target_language}.
+   - If written in a DIFFERENT language (e.g., Python/C++ when {target_language} is requested):
+     Set all scores (completeness, quality, approach, overall) to 0.0.
+     In correctness_feedback state: "Language Mismatch: Submitted code is written in [Detected] instead of {target_language}."
+
+2. SYNTAX & COMPILATION INTEGRITY:
+   - Carefully inspect {target_language} syntax: missing semicolons, unmatched braces/parentheses, void methods returning values, invalid type conversions, undefined/misspelled identifiers, or missing class/wrapper declarations.
+   - If code HAS SYNTAX/COMPILE ERRORS:
+     * completeness_score MUST BE between 0.0 and 2.0 (DO NOT award 6+ to uncompilable code).
+     * overall_score MUST BE <= 3.5.
+     * correctness_feedback sentence 1 MUST name the exact syntax error.
+
+3. EXECUTION, LOOP SAFETY & COMPLETENESS:
+   - Infinite Loops/Recursion: Check while/for loops for variable increment/decrement. If loop variable never changes or recursion has no valid base case (hangs/infinite loop), completeness_score MUST BE <= 2.0.
+   - Dead Code / Uncalled Methods: If a helper function solves the problem but is never called/printed in the main entry point (producing no output), completeness_score MUST BE <= 3.0.
+   - Mismatched Problem: If code solves a different problem (e.g. prints largest instead of 2nd-largest, prints LCM instead of GCD), completeness_score MUST BE <= 3.0.
+   - Empty / Stub Code: If submission contains only comments, TODOs, or empty boilerplate, completeness_score MUST BE <= 1.0.
+   - Edge Cases & Logic Bugs: If code has subtle runtime bugs (off-by-one bounds, array index out of bounds, missing duplicate guards, wrong initial values), completeness_score should be 4.0 to 6.5.
+
+4. SEPARATION OF STYLE VS CORRECTNESS:
+   - If code logic is 100% correct but minified, compressed onto one line, or has poor variable names:
+     * completeness_score MUST BE 9.0 - 10.0 (do NOT penalize correctness for style).
+     * Deduct ONLY from code_quality_score (e.g. 4.0 - 6.0).
+
+5. FORMULA & FEEDBACK FORMAT:
+   - Scores must be floats between 0.0 and 10.0.
+   - overall_score = (0.5 * completeness_score) + (0.3 * code_quality_score) + (0.2 * approach_taken_score)
+   - correctness_feedback MUST be exactly 2 concise, factual sentences.
+     Sentence 1: State whether the code compiles and solves the problem correctly, identifying any exact bug/syntax error.
+     Sentence 2: Suggest a specific technical improvement or confirm optimality.
+
+============================================================
+OUTPUT FORMAT (JSON ONLY, NO MARKDOWN, NO FLUFF):
+============================================================
 {{
-    "match": true or false,
-    "detected_language": "the actual language of the code"
-}}
-
-Rules:
-- "match" is true ONLY if the code is written in {target_language}
-- "match" is false if the code is in any other language
-- Output ONLY valid JSON, nothing else"""
+    "language_match": true,
+    "detected_language": "{target_language}",
+    "individual_reviews": [
+        {{
+            "question_text": "...",
+            "correctness_feedback": "Sentence 1. Sentence 2.",
+            "scores": {{
+                "completeness_score": 0.0,
+                "code_quality_score": 0.0,
+                "approach_taken_score": 0.0,
+                "overall_score": 0.0
+            }}
+        }}
+    ],
+    "summary_review": {{
+        "overall_average_score": 0.0,
+        "overall_quality_label": "Critical | Poor | Average | Good | Excellent",
+        "common_errors": "Brief summary of errors or None",
+        "strengths": "Key strengths",
+        "weaknesses": "Key weaknesses",
+        "recommendations": "Key recommendations"
+    }}
+}}"""
 
 
 def build_evaluation_prompt(
     target_language: str = DEFAULT_TARGET_LANGUAGE,
     ques_ans_content_with_inst: str = "",
-    summary_gen_flag: bool = False,
+    summary_gen_flag: bool = True,
 ) -> str:
+    return build_unified_evaluation_prompt(
+        target_language=target_language,
+        ques_ans_content_with_inst=ques_ans_content_with_inst,
+        summary_gen_flag=summary_gen_flag,
+    )
 
-    INDIVIDUAL_PART = f"""
-            The submitted programming language is:
 
-            {target_language}
-
-            Below are the question-answer pairs submitted by the user.
-
-            Each item may optionally contain SPECIFIC INSTRUCTIONS.
-            These instructions represent additional constraints,
-            expected approaches, edge cases, evaluation criteria,
-            or implementation requirements for that particular question.
-
-            While evaluating each answer:
-            - Carefully follow the SPECIFIC INSTRUCTIONS if present
-            - Evaluate whether the submitted answer satisfies them
-            - Include violations or missed requirements in the feedback
-
-            Submitted Question–Answer Data:
-
-            {ques_ans_content_with_inst}
-
-            Tasks:
-
-            ------------------------------------------------------------
-            1. REVIEW EACH QUESTION–ANSWER INDIVIDUALLY
-            ------------------------------------------------------------
-
-            For each item:
-
-            - Analyze correctness
-            - Identify bugs
-            - Evaluate readability
-            - Evaluate efficiency
-            - Validate adherence to SPECIFIC INSTRUCTIONS (if present)
-            - Merge correctness assessment AND improvement suggestions into
-              correctness_feedback as exactly 2 sentences.
-              Sentence 1: assess correctness.
-              Sentence 2: a genuine improvement if one exists, or confirm the
-              code is optimal. Do not invent suggestions.
-            - Do NOT output improvement_suggestions as a separate key.
-
-            Scoring (ALL SCORES MUST BE OUT OF 10):
-            - completeness_score
-            - code_quality_score
-            - approach_taken_score
-            - overall_score
-
-            overall_score formula:
-            (0.5 * completeness_score)
-            + (0.3 * code_quality_score)
-            + (0.2 * approach_taken_score)"""
-
-    SUMMARY_PART = """------------------------------------------------------------
-        2. SUMMARY REVIEW
-        ------------------------------------------------------------
-
-        Provide:
-        - overall_quality_label
-        - common mistakes
-        - strengths
-        - weaknesses
-        - recommendations
-
-        overall_quality_label mapping:
-        - 9–10 → Excellent
-        - 7.5–8.9 → Good
-        - 6–7.4 → Average
-        - 4–5.9 → Poor
-        - below 4 → Critical"""
-
-    SCORE_PART = """------------------------------------------------------------
-        3. OUTPUT FORMAT
-        ------------------------------------------------------------
-
-        Return this exact JSON schema:
-
-        {{
-            "individual_reviews": [
-                {{
-                    "question_text": "",
-                    "correctness_feedback": "",
-                    "scores": {{
-                        "completeness_score":0.0,
-                        "code_quality_score": 0.0,
-                        "approach_taken_score": 0.0,
-                        "overall_score": 0.0
-                    }}
-                }}
-            ],
-            "summary_review": {{
-                "overall_average_score": 0.0,
-                "overall_quality_label": "",
-                "common_errors": "",
-                "strengths": "",
-                "weaknesses": "",
-                "recommendations": ""
-            }}
-        }}
-
-        Rules:
-        - All scores must be between 0 and 10
-        - Output ONLY valid JSON
-        - Do not include markdown
-        - Do not include explanations outside JSON
-        - Base analysis strictly on the submitted code
-        """
-
-    SCORE_WITHOUT_SUMM_PART = """------------------------------------------------------------
-        3. OUTPUT FORMAT
-        ------------------------------------------------------------
-
-        Return this exact JSON schema:
-
-        {{
-            "individual_reviews": [
-                {{
-                    "question_text": "",
-                    "correctness_feedback": "",
-                    "scores": {{
-                        "completeness_score":0.0,
-                        "code_quality_score": 0.0,
-                        "approach_taken_score": 0.0,
-                        "overall_score": 0.0
-                    }}
-                }}
-            ],
-            "summary_review":"None"
-        }}
-
-        Rules:
-        - All scores must be between 0 and 10
-        - Output ONLY valid JSON
-        - Do not include markdown
-        - Do not include explanations outside JSON
-        - Do not include improvement_suggestions in the output
-        - Base analysis strictly on the submitted code
-        """
-
-    if summary_gen_flag:
-        return INDIVIDUAL_PART + SUMMARY_PART + SCORE_PART
-    else:
-        return INDIVIDUAL_PART + SCORE_WITHOUT_SUMM_PART
+def build_language_detection_prompt(target_language: str, code: str) -> str:
+    return f"""You are a programming language detector.
+Check if this code is in {target_language}:
+{code}
+Return JSON only: {{"match": true/false, "detected_language": "name"}}"""

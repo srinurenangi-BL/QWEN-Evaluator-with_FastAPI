@@ -1,0 +1,550 @@
+[
+  {
+    "id": "V1",
+    "category": "Fully Correct",
+    "ground_truth": "Fully Correct. No issues.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 41.25,
+    "error": null
+  },
+  {
+    "id": "V2",
+    "category": "Does Not Compile",
+    "ground_truth": "Does Not Compile \u2014 no class declaration, main is floating. Also missing import.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V2 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V2 feedback contains: correct"
+    ],
+    "elapsed": 31.04,
+    "error": null
+  },
+  {
+    "id": "V3",
+    "category": "Compiles But Unrunnable",
+    "ground_truth": "Compiles but no main method \u2014 cannot execute. Logic inside helper is correct.",
+    "expected_min": 1.0,
+    "expected_max": 5.0,
+    "scores": {
+      "completeness": 3.0,
+      "code_quality": 4.5,
+      "approach": 4.0,
+      "overall": 3.7,
+      "feedback": "The code compiles correctly but does not solve the problem correctly. The current implementation returns the second largest number, but it does not handle cases where there are multiple instances of the largest number."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Incorrect logic for finding the second largest distinct value.",
+      "strengths": "Correctly identifies the second largest number in some cases, handles edge cases well.",
+      "weaknesses": "Fails to handle cases where there are multiple instances of the largest number.",
+      "recommendations": "Refine the logic to correctly identify the second largest distinct value."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [1.0, 5.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 56.71,
+    "error": null
+  },
+  {
+    "id": "V4",
+    "category": "Runs But No Output",
+    "ground_truth": "Compiles and runs, but produces no output. Correct helper is dead code \u2014 never invoked.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.5,
+      "approach": 6.0,
+      "overall": 3.7,
+      "feedback": "The code does not compile because it lacks a call to the `findSecondLargest(arr)` method and does not print the result. The logic for finding the second largest distinct value is correct."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Lack of method call and print statement.",
+      "strengths": "Correct logic for finding the second largest distinct value.",
+      "weaknesses": "Missing method call and print statement, which prevents the program from running correctly.",
+      "recommendations": "Add a call to `findSecondLargest(arr)` and print its result in the `main` method."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [1.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V4 feedback contains: correct"
+    ],
+    "elapsed": 61.17,
+    "error": null
+  },
+  {
+    "id": "V5",
+    "category": "Partially Correct (Logic Bug)",
+    "ground_truth": "i < n - 1 skips last element. Wrong output on most inputs.",
+    "expected_min": 3.0,
+    "expected_max": 6.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 5.0,
+      "approach": 6.0,
+      "overall": 3.8,
+      "feedback": "The code compiles but does not solve the problem correctly. The current implementation only finds the largest and second-largest values without considering duplicates. For example, if the input is [3, 1, 4, 4], the output will be 3 instead of 1."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.0,
+      "common_errors": "Incorrect logic for finding the second largest distinct value.",
+      "strengths": "The code is syntactically correct and follows a logical approach to solving the problem.",
+      "weaknesses": "The logic fails to correctly handle duplicates, leading to incorrect results.",
+      "recommendations": "Revise the logic to ensure that duplicates of the largest value are not considered when finding the second-largest distinct value."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.8 is WITHIN expected range [3.0, 6.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V5 feedback contains: correct"
+    ],
+    "elapsed": 69.35,
+    "error": null
+  },
+  {
+    "id": "V6",
+    "category": "Partially Correct (Logic Bug)",
+    "ground_truth": "Missing arr[i] != largest guard. Fails on arrays with duplicate max values.",
+    "expected_min": 3.0,
+    "expected_max": 6.5,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.5,
+      "approach": 3.5,
+      "overall": 3.7,
+      "feedback": "The code does not correctly identify the second largest distinct value. It fails to handle cases where all elements are the same or when there is only one unique element. The current logic incorrectly sets both `largest` and `secondLargest` to `Integer.MIN_VALUE`, which can lead to incorrect results."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Incorrect logic for identifying the second largest distinct value, failure to handle edge cases.",
+      "strengths": "Correctly reads input and uses a loop to find the largest and second largest values.",
+      "weaknesses": "Lacks proper handling of edge cases and does not correctly identify the second largest distinct value.",
+      "recommendations": "Revise the logic to properly handle edge cases and ensure that duplicates of the largest value are not counted as separate 'second largest' values."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [3.0, 6.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V6 feedback contains: correct"
+    ],
+    "elapsed": 77.15,
+    "error": null
+  },
+  {
+    "id": "V7",
+    "category": "Partially Correct (Edge Case Crash)",
+    "ground_truth": "ArrayIndexOutOfBoundsException when n <= 1. No bounds guard.",
+    "expected_min": 3.0,
+    "expected_max": 6.5,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.5,
+      "approach": 3.5,
+      "overall": 3.7,
+      "feedback": "The code compiles but does not solve the problem correctly. The current implementation incorrectly identifies the second largest value by comparing against the first element instead of initializing `largest` and `secondLargest` properly."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Incorrect initialization of `largest` and `secondLargest`, logic bug in finding the second largest value.",
+      "strengths": "Correctly reads input, uses loops to find values, handles edge cases (e.g., duplicates).",
+      "weaknesses": "Fails to correctly identify the second largest distinct value, lacks proper initialization of variables.",
+      "recommendations": "Initialize `largest` and `secondLargest` properly. Ensure logic correctly identifies the second largest distinct value."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [3.0, 6.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V7 feedback contains: correct"
+    ],
+    "elapsed": 71.02,
+    "error": null
+  },
+  {
+    "id": "V8",
+    "category": "Mismatched (Wrong Problem)",
+    "ground_truth": "Prints the largest element, not the second-largest. Different question answered.",
+    "expected_min": 0.0,
+    "expected_max": 3.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 3.5,
+      "approach": 4.0,
+      "overall": 3.1,
+      "feedback": "The code does not solve the problem correctly. It only prints the largest value, not the second largest distinct value. The code also lacks logic to handle edge cases such as arrays with fewer than two unique elements."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.1,
+      "common_errors": "Lack of logic to find the second largest distinct value, failure to handle edge cases.",
+      "strengths": "Correctly identifies the largest value in the array.",
+      "weaknesses": "Fails to identify the second largest distinct value and does not handle edge cases properly.",
+      "recommendations": "Implement a more robust algorithm that correctly identifies the second largest distinct value and handles edge cases such as arrays with fewer than two unique elements."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=3.1 is OUTSIDE expected range [0.0, 3.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 72.09,
+    "error": null
+  },
+  {
+    "id": "V9",
+    "category": "Does Not Compile (Syntax Error)",
+    "ground_truth": "Missing final closing brace for Main class.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V9 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V9 feedback contains: correct"
+    ],
+    "elapsed": 52.07,
+    "error": null
+  },
+  {
+    "id": "V10",
+    "category": "Does Not Compile (Syntax Error)",
+    "ground_truth": "Missing semicolon after sc.nextInt() on the n assignment line.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.5,
+      "approach": 3.0,
+      "overall": 3.7,
+      "feedback": "The code compiles but does not solve the problem correctly. The current implementation incorrectly sets both `largest` and `secondLargest` to `Integer.MIN_VALUE`, which can lead to incorrect results if the input array contains values less than or equal to `Integer.MIN_VALUE`. Additionally, the logic for updating `secondLargest` is flawed."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Incorrect initialization of `largest` and `secondLargest`, flawed logic for updating `secondLargest`.",
+      "strengths": "Correctly reads input array, uses a loop to find the second largest value.",
+      "weaknesses": "Fails to correctly identify the second largest distinct value due to improper initialization and logic errors.",
+      "recommendations": "Initialize `largest` and `secondLargest` appropriately and correct the logic for updating `secondLargest`."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V10 feedback contains: correct"
+    ],
+    "elapsed": 80.64,
+    "error": null
+  },
+  {
+    "id": "V11",
+    "category": "Does Not Compile (Type Error)",
+    "ground_truth": "void method has return secondLargest \u2014 cannot return a value from void.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.5,
+      "approach": 3.5,
+      "overall": 3.7,
+      "feedback": "The code compiles but does not solve the problem correctly. The method `findSecondLargest` returns an integer instead of printing it, and it does not handle edge cases such as arrays with fewer than two distinct elements."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Incorrect return type and lack of handling edge cases.",
+      "strengths": "Correctly identifies the second largest distinct value in most cases.",
+      "weaknesses": "Does not handle arrays with fewer than two distinct elements and returns an integer instead of printing it.",
+      "recommendations": "Ensure the method prints the result and handles edge cases such as arrays with fewer than two distinct elements."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V11 feedback contains: correct"
+    ],
+    "elapsed": 67.08,
+    "error": null
+  },
+  {
+    "id": "V12",
+    "category": "Runs But Hangs",
+    "ground_truth": "i is never incremented inside while loop \u2014 infinite loop. Logic body is correct.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V12 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V12 feedback contains: correct",
+      "\u26a0\ufe0f CONFIRMED BLIND SPOT: V12 scored 9.4 \u2014 model missed infinite loop (code body is correct, only missing i++)"
+    ],
+    "elapsed": 50.47,
+    "error": null
+  },
+  {
+    "id": "V13",
+    "category": "Does Not Compile (Typo)",
+    "ground_truth": "secondlargest (lowercase l) != secondLargest (uppercase L). Case-sensitive error.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.5,
+      "approach": 6.0,
+      "overall": 3.7,
+      "feedback": "The code compiles but does not solve the problem correctly. The variable `secondlargest` is misspelled, causing the program to fail to identify the second largest distinct value."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.7,
+      "common_errors": "Misspelled variable name `secondlargest`.",
+      "strengths": "Correctly identifies the largest value and attempts to find the second largest distinct value.",
+      "weaknesses": "Syntax error in variable name, preventing correct execution of the program.",
+      "recommendations": "Fix the misspelling of `secondlargest` to `secondLargest`."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.7 is WITHIN expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V13 feedback contains: correct"
+    ],
+    "elapsed": 62.7,
+    "error": null
+  },
+  {
+    "id": "V14",
+    "category": "Fully Correct (Poor Style)",
+    "ground_truth": "Functionally correct \u2014 identical logic, crushed formatting. Style ding only.",
+    "expected_min": 5.0,
+    "expected_max": 9.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [5.0, 9.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 50.34,
+    "error": null
+  },
+  {
+    "id": "V15",
+    "category": "Wrong Language",
+    "ground_truth": "Python code. Logic is correct but language gate should reject before grading.",
+    "expected_min": 0.0,
+    "expected_max": 0.0,
+    "scores": {
+      "completeness": 0.0,
+      "code_quality": 0.0,
+      "approach": 0.0,
+      "overall": 0.0,
+      "feedback": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java. Evaluation skipped and 0.0 score assigned."
+    },
+    "summary": {
+      "label": "Critical",
+      "avg_score": 0.0,
+      "common_errors": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java.",
+      "strengths": "None",
+      "weaknesses": "Submitted code is written in Python instead of requested Java.",
+      "recommendations": "Please rewrite and submit your solution in Java."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=0.0 is WITHIN expected range [0.0, 0.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 42.69,
+    "error": null
+  },
+  {
+    "id": "V16",
+    "category": "Unattempted",
+    "ground_truth": "Compiles, runs, no output, no logic. Completely unattempted.",
+    "expected_min": 0.0,
+    "expected_max": 2.0,
+    "scores": {
+      "completeness": 1.0,
+      "code_quality": 2.5,
+      "approach": 3.0,
+      "overall": 2.75,
+      "feedback": "The code does not compile due to missing implementation. The main method is empty, and there are no methods or logic to solve the problem."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.75,
+      "common_errors": "Empty main method, no implementation logic.",
+      "strengths": "Correctly identifies the language requirement and provides a basic structure for the program.",
+      "weaknesses": "Lacks any actual code to solve the problem, resulting in a non-functional submission.",
+      "recommendations": "Implement the required logic within the main method or create helper methods to find the second largest distinct value."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=2.8 is OUTSIDE expected range [0.0, 2.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 57.67,
+    "error": null
+  },
+  {
+    "id": "V17",
+    "category": "Partially Correct (Subtle Init Bug)",
+    "ground_truth": "Initialized to 0 instead of Integer.MIN_VALUE. Fails on all-negative arrays.",
+    "expected_min": 3.0,
+    "expected_max": 7.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [3.0, 7.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f CONFIRMED BLIND SPOT: V17 scored 9.4 \u2014 model missed 0-init bug (same failure pattern as Kadane's in prior tests)"
+    ],
+    "elapsed": 39.91,
+    "error": null
+  },
+  {
+    "id": "V18",
+    "category": "Fully Correct (Minor Dead Code)",
+    "ground_truth": "Functionally correct. Unused import and dead variable \u2014 minor code quality issue.",
+    "expected_min": 7.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows best practices, and correctly implements the logic to find the second largest distinct value in an array.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [7.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 58.01,
+    "error": null
+  }
+]

@@ -1,0 +1,619 @@
+[
+  {
+    "id": "V19",
+    "category": "Fully Correct",
+    "ground_truth": "Correct. Loops from end to start building reversed string.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It reads a string from the user, reverses it using a character-level approach, and prints the reversed string."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows the requirements. It uses a character-level approach to reverse the string without using any built-in methods.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 70.15,
+    "error": null
+  },
+  {
+    "id": "V20",
+    "category": "Does Not Compile (Syntax Error)",
+    "ground_truth": "Won't compile \u2014 missing semicolons after sc.nextLine() and after temp declaration.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. The logic for reversing the string is implemented correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, well-structured, and follows the requirements.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V20 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V20 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT RETEST: V20 (syntax error) scored 9.4 \u2014 still missed?"
+    ],
+    "elapsed": 52.73,
+    "error": null
+  },
+  {
+    "id": "V21",
+    "category": "Partially Correct (Runtime Crash)",
+    "ground_truth": "Crashes with ArrayIndexOutOfBoundsException \u2014 right starts at chars.length instead of chars.length - 1.",
+    "expected_min": 2.0,
+    "expected_max": 6.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. The logic for reversing the string is sound."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows the requirements.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [2.0, 6.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V21 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V21 feedback contains: correct"
+    ],
+    "elapsed": 55.45,
+    "error": null
+  },
+  {
+    "id": "V22",
+    "category": "Runs But Hangs",
+    "ground_truth": "Infinite loop \u2014 left++ and right-- are commented out. While body swaps forever.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It reads a string from the user, reverses it using a character-level approach, and prints the reversed string."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows a clear approach to reversing the string.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V22 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V22 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT RETEST: V22 (infinite loop) scored 9.4 \u2014 still missed?"
+    ],
+    "elapsed": 118.95,
+    "error": null
+  },
+  {
+    "id": "V23",
+    "category": "Fully Correct",
+    "ground_truth": "Correct. Handles edge cases, uses sqrt optimization.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.2,
+      "feedback": "The code compiles and solves the problem correctly. It efficiently checks if a number is prime by iterating only up to its square root."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.2,
+      "common_errors": "None",
+      "strengths": "Correct implementation, efficient approach, and good code quality.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.2 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 51.89,
+    "error": null
+  },
+  {
+    "id": "V24",
+    "category": "Partially Correct (Edge Case Bug)",
+    "ground_truth": "Bug: considers 1 as prime (guard is n < 1 instead of n < 2). Also considers 0 and negative numbers incorrectly.",
+    "expected_min": 4.0,
+    "expected_max": 7.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.2,
+      "feedback": "The code compiles and solves the problem correctly. It efficiently checks for prime numbers by iterating only up to the square root of the input number."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.2,
+      "common_errors": "None",
+      "strengths": "Correct implementation, efficient approach, good readability.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.2 is OUTSIDE expected range [4.0, 7.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V24 scored 9.2 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V24 feedback contains: correct, efficient"
+    ],
+    "elapsed": 53.6,
+    "error": null
+  },
+  {
+    "id": "V25",
+    "category": "Does Not Compile (Type Error)",
+    "ground_truth": "Won't compile \u2014 isPrime() declared void but returns boolean.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It efficiently checks if a number is prime by iterating only up to its square root."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "Correct implementation, efficient approach, good readability.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V25 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V25 feedback contains: correct, efficient",
+      "\u26a0\ufe0f BLIND SPOT RETEST: V25 (void+return) scored 9.4 \u2014 still missed?"
+    ],
+    "elapsed": 108.45,
+    "error": null
+  },
+  {
+    "id": "V26",
+    "category": "Fully Correct (Poor Style)",
+    "ground_truth": "Functionally correct. Crushed formatting, single-letter vars, no whitespace.",
+    "expected_min": 5.0,
+    "expected_max": 9.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It efficiently checks if a number is prime by iterating only up to its square root."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows best practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [5.0, 9.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 58.71,
+    "error": null
+  },
+  {
+    "id": "V27",
+    "category": "Fully Correct",
+    "ground_truth": "Correct. Properly filters non-alpha chars and counts vowels/consonants.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows best practices, and handles edge cases correctly.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 57.29,
+    "error": null
+  },
+  {
+    "id": "V28",
+    "category": "Partially Correct (Logic Bug)",
+    "ground_truth": "Bug: no isLetter check, so spaces/digits/special chars count as consonants.",
+    "expected_min": 3.0,
+    "expected_max": 6.5,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It accurately counts vowels and consonants while ignoring non-alphabetic characters."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-structured, correctly implements the logic for counting vowels and consonants, and handles edge cases like non-alphabetic characters effectively.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [3.0, 6.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V28 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V28 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT RETEST: V28 (space as consonant) scored 9.4 \u2014 same as prior vowel test?"
+    ],
+    "elapsed": 57.5,
+    "error": null
+  },
+  {
+    "id": "V29",
+    "category": "Does Not Compile (Syntax Error)",
+    "ground_truth": "Won't compile \u2014 missing final closing brace for Main class.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows the requirements accurately, and handles edge cases properly.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V29 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V29 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT RETEST: V29 (missing brace) scored 9.4 \u2014 still missed?"
+    ],
+    "elapsed": 57.0,
+    "error": null
+  },
+  {
+    "id": "V30",
+    "category": "Wrong Language",
+    "ground_truth": "Python code. Logic is correct but wrong language.",
+    "expected_min": 0.0,
+    "expected_max": 0.0,
+    "scores": {
+      "completeness": 0.0,
+      "code_quality": 0.0,
+      "approach": 0.0,
+      "overall": 0.0,
+      "feedback": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java. Evaluation skipped and 0.0 score assigned."
+    },
+    "summary": {
+      "label": "Critical",
+      "avg_score": 0.0,
+      "common_errors": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java.",
+      "strengths": "None",
+      "weaknesses": "Submitted code is written in Python instead of requested Java.",
+      "recommendations": "Please rewrite and submit your solution in Java."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=0.0 is WITHIN expected range [0.0, 0.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 54.81,
+    "error": null
+  },
+  {
+    "id": "V31",
+    "category": "Fully Correct",
+    "ground_truth": "Correct Euclidean algorithm implementation.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and correctly solves the problem of finding the GCD using the Euclidean algorithm. The implementation is correct and follows the expected logic."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows the Euclidean algorithm correctly, and handles edge cases appropriately.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 54.6,
+    "error": null
+  },
+  {
+    "id": "V32",
+    "category": "Runs But No Output",
+    "ground_truth": "Compiles and runs, but gcd() is never called. Main just reads input and exits.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 3.0,
+      "code_quality": 4.5,
+      "approach": 5.0,
+      "overall": 4.2,
+      "feedback": "The code compiles correctly but does not print the result of the GCD calculation. The main method should call the gcd(a, b) function and print its return value."
+    },
+    "summary": {
+      "label": "Good",
+      "avg_score": 4.2,
+      "common_errors": "The main method does not call the gcd function and print its result.",
+      "strengths": "Correct implementation of the Euclidean algorithm, good code quality.",
+      "weaknesses": "Missing output statement in the main method.",
+      "recommendations": "Add a line to call the gcd function and print its return value in the main method."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=4.2 is OUTSIDE expected range [1.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V32 feedback contains: correct"
+    ],
+    "elapsed": 61.69,
+    "error": null
+  },
+  {
+    "id": "V33",
+    "category": "Mismatched (Wrong Problem)",
+    "ground_truth": "Calculates and prints LCM, not GCD. Different computation entirely.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 3.0,
+      "code_quality": 4.5,
+      "approach": 5.0,
+      "overall": 4.2,
+      "feedback": "The code compiles but does not solve the problem correctly. The current implementation calculates the Least Common Multiple (LCM) instead of the GCD."
+    },
+    "summary": {
+      "label": "Good",
+      "avg_score": 4.2,
+      "common_errors": "Incorrect calculation of LCM instead of GCD.",
+      "strengths": "Correctly implements the Euclidean algorithm for GCD, handles user input, and calculates LCM correctly.",
+      "weaknesses": "The program does not meet the requirement to print the GCD but instead prints the LCM.",
+      "recommendations": "Modify the code to calculate and print the GCD using the Euclidean algorithm."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=4.2 is OUTSIDE expected range [1.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V33 feedback contains: correct"
+    ],
+    "elapsed": 63.01,
+    "error": null
+  },
+  {
+    "id": "V34",
+    "category": "Runs But Crashes (Stack Overflow)",
+    "ground_truth": "Infinite recursion \u2014 recursive call uses gcd(a, b) instead of gcd(b, a % b). StackOverflowError.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 1.0,
+      "code_quality": 3.0,
+      "approach": 4.5,
+      "overall": 2.7,
+      "feedback": "The code does not compile correctly. The recursive call in the gcd method is missing a base case to stop the recursion, which will result in a stack overflow error. Additionally, the main method should check if the input numbers are positive before proceeding with the GCD calculation."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.7,
+      "common_errors": "Missing base case in recursive GCD method and lack of input validation.",
+      "strengths": "Correctly implements the Euclidean algorithm for GCD calculation.",
+      "weaknesses": "Fails to compile due to missing base case, lacks input validation, and could be more robust.",
+      "recommendations": "Implement a proper base case in the recursive GCD method and add checks to ensure input numbers are positive."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=2.7 is WITHIN expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V34 feedback contains: correct"
+    ],
+    "elapsed": 88.92,
+    "error": null
+  },
+  {
+    "id": "V35",
+    "category": "Fully Correct",
+    "ground_truth": "Correct. Uses strict < comparison between consecutive elements.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It accurately checks if the array is sorted in strictly ascending order."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows best practices, and correctly solves the problem.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 61.32,
+    "error": null
+  },
+  {
+    "id": "V36",
+    "category": "Partially Correct (Wrong Condition)",
+    "ground_truth": "Bug: checks arr[i] >= arr[i-1] which checks for NON-DESCENDING (wrong direction). On descending arrays it says 'Sorted', on ascending it says 'Not Sorted'.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It checks if each element in the array is strictly greater than the previous one and prints 'Sorted' or 'Not Sorted' accordingly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows good coding practices.",
+      "weaknesses": "None identified.",
+      "recommendations": "None."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [1.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V36 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V36 feedback contains: correct"
+    ],
+    "elapsed": 58.14,
+    "error": null
+  },
+  {
+    "id": "V37",
+    "category": "Does Not Compile (Typo)",
+    "ground_truth": "Won't compile \u2014 'sorte' is used in println but only 'sorted' is declared.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.0,
+      "approach": 5.0,
+      "overall": 3.6,
+      "feedback": "The code does not compile due to a typo in the print statement. The variable name should be `sorted` instead of `sorte`. Additionally, the program correctly checks if the array is sorted in strictly ascending order."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 3.6,
+      "common_errors": "Syntax error in print statement.",
+      "strengths": "Correct logic for checking if the array is sorted in strictly ascending order.",
+      "weaknesses": "Compilation failure due to a typo.",
+      "recommendations": "Fix the syntax error in the print statement."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.6 is WITHIN expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V37 feedback contains: correct"
+    ],
+    "elapsed": 64.45,
+    "error": null
+  },
+  {
+    "id": "V38",
+    "category": "Unattempted",
+    "ground_truth": "Compiles, runs, no output, no logic. Completely unattempted.",
+    "expected_min": 0.0,
+    "expected_max": 2.0,
+    "scores": {
+      "completeness": 1.0,
+      "code_quality": 2.5,
+      "approach": 3.0,
+      "overall": 2.7,
+      "feedback": "The code does not compile due to missing implementation. The main method should include logic to read an array, check if it is sorted, and print the result."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.7,
+      "common_errors": "Missing implementation and logic in the main method.",
+      "strengths": "The code is syntactically correct and follows Java conventions.",
+      "weaknesses": "Lacks functionality to solve the problem as described.",
+      "recommendations": "Implement the required logic inside the main method."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=2.7 is OUTSIDE expected range [0.0, 2.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 62.03,
+    "error": null
+  }
+]

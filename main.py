@@ -17,7 +17,7 @@ from schemas import (
     ScoreBreakdown,
     ExecutionMetrics
 )
-from prompts import format_submissions, build_language_detection_prompt, build_evaluation_prompt
+from prompts import format_submissions, build_unified_evaluation_prompt
 
 load_dotenv()
 
@@ -63,12 +63,16 @@ class LLMClientError(Exception):
     pass
 
 
-async def send_prompt(prompt_text: str = "", json_mode: bool = False) -> str:
-    options = {"temperature": LLM_TEMPERATURE}
+async def send_prompt(prompt_text: str = "", json_mode: bool = True) -> str:
+    options = {
+        "temperature": LLM_TEMPERATURE,
+        "num_ctx": 2048,
+        "num_predict": 450,
+    }
     kwargs = {
         "model": OLLAMA_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a fair, precise code evaluator. Return strictly what was requested."},
+            {"role": "system", "content": "You are a fair, precise, and deterministic code evaluator. Return strictly valid JSON."},
             {"role": "user", "content": prompt_text},
         ],
         "options": options,
@@ -130,47 +134,39 @@ async def review_code(request: CodeReviewRequest):
 
     logger.info(f"[INPUT RECEIVED] Target Language: {request.target_language} | Total Submissions: {len(request.submissions)}")
 
-    logger.info("[STEP 1/5] Initiating Language Detection check...")
-    first_code = request.submissions[0].code
-    lang_prompt = build_language_detection_prompt(request.target_language, first_code)
+    formatted = format_submissions(request.submissions)
+    eval_prompt = build_unified_evaluation_prompt(
+        target_language=request.target_language,
+        ques_ans_content_with_inst=formatted,
+        summary_gen_flag=True,
+    )
 
-    lang_start = time.perf_counter()
-    logger.info(f"[LLM INPUT SENT] Sending Language Detection prompt to model '{OLLAMA_MODEL}'...")
-    detected_lang = None
-    is_mismatch = False
-    lang_duration = 0.0
-
+    logger.info(f"[STEP 1/2] Sending unified evaluation prompt ({len(eval_prompt)} chars) to model '{OLLAMA_MODEL}'...")
+    eval_start = time.perf_counter()
     try:
-        lang_raw = await send_prompt(lang_prompt, json_mode=True)
-        lang_duration = time.perf_counter() - lang_start
-        logger.info(f"[LLM RESPONSE RECEIVED] Language Detection completed by LLM in {lang_duration:.2f} seconds.")
+        raw_response = await send_prompt(eval_prompt, json_mode=True)
+        eval_duration = time.perf_counter() - eval_start
+        logger.info(f"[LLM RESPONSE RECEIVED] Single-pass evaluation completed in {eval_duration:.2f} seconds.")
+    except LLMClientError as e:
+        logger.error(f"[ERROR] LLM evaluation call failed after {time.perf_counter() - eval_start:.2f}s: {e}")
+        raise HTTPException(status_code=502, detail=f"LLM error: {e}")
 
-        lang_result = json.loads(lang_raw)
-        raw_match = lang_result.get("match", True)
-        detected_lang = str(lang_result.get("detected_language", "unknown")).strip()
+    logger.info("[STEP 2/2] Parsing LLM response into structured output...")
+    try:
+        result = json.loads(raw_response)
+    except json.JSONDecodeError as e:
+        logger.error(f"[ERROR] Failed to parse JSON response from LLM: {e}")
+        raise HTTPException(status_code=502, detail=f"LLM returned invalid JSON: {e}")
 
-        target_clean = request.target_language.strip().lower()
-        detected_clean = detected_lang.lower()
+    is_lang_match = result.get("language_match", True)
+    detected_lang = str(result.get("detected_language", request.target_language)).strip()
+    target_clean = request.target_language.strip().lower()
+    detected_clean = detected_lang.lower()
 
-        if detected_clean == target_clean:
-            is_mismatch = False
-        elif raw_match is False or str(raw_match).lower() == "false":
-            is_mismatch = True
-        elif raw_match is True or str(raw_match).lower() == "true":
-            is_mismatch = False
-        else:
-            is_mismatch = (detected_clean != target_clean)
-
-        if is_mismatch:
-            logger.warning(f"[LANGUAGE MISMATCH] Expected '{request.target_language}', but detected '{detected_lang}'. Assigning 0.0 scores and returning explanation.")
-        else:
-            logger.info(f"[SUCCESS] Language check passed. Submitted code matches expected target language '{request.target_language}'.")
-    except Exception as e:
-        logger.warning(f"[WARNING] Language detection skipped due to error: {e}")
-
-    if is_mismatch and detected_lang:
+    if is_lang_match is False or (detected_clean != "unknown" and detected_clean != target_clean and not target_clean.startswith(detected_clean)):
+        logger.warning(f"[LANGUAGE MISMATCH] Expected '{request.target_language}', but detected '{detected_lang}'. Enforcing 0.0 scores.")
         mismatch_msg = f"⚠️ Language Mismatch: Submitted code was detected as {detected_lang}, but expected {request.target_language}."
-
+        
         reviews = []
         for sub in request.submissions:
             reviews.append(
@@ -189,7 +185,7 @@ async def review_code(request: CodeReviewRequest):
         summary = SummaryReview(
             overall_average_score=0.0,
             overall_quality_label="Critical",
-            common_errors=f"{mismatch_msg}",
+            common_errors=mismatch_msg,
             strengths="None",
             weaknesses=f"Submitted code is written in {detected_lang} instead of requested {request.target_language}.",
             recommendations=f"Please rewrite and submit your solution in {request.target_language}."
@@ -200,13 +196,11 @@ async def review_code(request: CodeReviewRequest):
 
         metrics = ExecutionMetrics(
             request_duration_seconds=round(total_duration, 2),
-            lang_detection_duration_seconds=round(lang_duration, 2),
-            code_eval_duration_seconds=0.0,
+            lang_detection_duration_seconds=0.0,
+            code_eval_duration_seconds=round(eval_duration, 2),
             total_requests_processed=total_reqs,
             running_average_duration_seconds=running_avg
         )
-
-        logger.info(f"=== [PROCESS COMPLETED - LANGUAGE MISMATCH ZERO SCORE] Total Request Time: {total_duration:.2f}s (Language Detection: {lang_duration:.2f}s) | Total Requests Processed: {total_reqs} | Running Average Response Time: {running_avg:.2f}s ===")
 
         return PromptDrivenCodeReviewResponse(
             individual_reviews=reviews,
@@ -214,46 +208,21 @@ async def review_code(request: CodeReviewRequest):
             execution_metrics=metrics
         )
 
-    logger.info("[STEP 2/5] Formatting code submissions...")
-    formatted = format_submissions(request.submissions)
-
-    logger.info("[STEP 3/5] Building evaluation prompt...")
-    eval_prompt = build_evaluation_prompt(
-        target_language=request.target_language,
-        ques_ans_content_with_inst=formatted,
-        summary_gen_flag=True,
-    )
-
-    logger.info(f"[STEP 4/5] Sending main evaluation prompt ({len(eval_prompt)} characters) to LLM model '{OLLAMA_MODEL}'...")
-    eval_start = time.perf_counter()
-    try:
-        raw_response = await send_prompt(eval_prompt, json_mode=True)
-        eval_duration = time.perf_counter() - eval_start
-        logger.info(f"[LLM RESPONSE RECEIVED] Code Evaluation completed by LLM in {eval_duration:.2f} seconds.")
-    except LLMClientError as e:
-        logger.error(f"[ERROR] LLM evaluation call failed after {time.perf_counter() - eval_start:.2f}s: {e}")
-        raise HTTPException(status_code=502, detail=f"LLM error: {e}")
-
-    logger.info("[STEP 5/5] Parsing LLM response into structured output...")
-    try:
-        result = json.loads(raw_response)
-    except json.JSONDecodeError as e:
-        logger.error(f"[ERROR] Failed to parse JSON response from LLM: {e}")
-        raise HTTPException(status_code=502, detail=f"LLM returned invalid JSON: {e}")
+    result.pop("language_match", None)
+    result.pop("detected_language", None)
 
     total_duration = time.perf_counter() - req_start_time
-    total_llm_time = lang_duration + eval_duration
     total_reqs, running_avg = await record_metrics(total_duration)
 
     metrics = ExecutionMetrics(
         request_duration_seconds=round(total_duration, 2),
-        lang_detection_duration_seconds=round(lang_duration, 2),
+        lang_detection_duration_seconds=0.0,
         code_eval_duration_seconds=round(eval_duration, 2),
         total_requests_processed=total_reqs,
         running_average_duration_seconds=running_avg
     )
 
-    logger.info(f"=== [PROCESS COMPLETED] Total Request Time: {total_duration:.2f}s | Total LLM Time: {total_llm_time:.2f}s (Language Detection: {lang_duration:.2f}s, Code Evaluation: {eval_duration:.2f}s) | Total Requests Processed: {total_reqs} | Running Average Response Time: {running_avg:.2f}s ===")
+    logger.info(f"=== [PROCESS COMPLETED] Total Request Time: {total_duration:.2f}s | Total Requests Processed: {total_reqs} | Running Average Response Time: {running_avg:.2f}s ===")
 
     result["execution_metrics"] = metrics.model_dump()
     return PromptDrivenCodeReviewResponse(**result)
