@@ -148,35 +148,3 @@ Across many broken variants, the model produced nearly identical feedback instea
 | Unattempted Stubs | 2 | 0 | **0%** 🔴 |
 | Wrong Problem | 2 | 0 | **0%** 🔴 |
 
----
-
-## RECOMMENDATIONS (Phase 3 — Not Yet Implemented)
-
-| Priority | Action | Fixes | Effort |
-|---|---|---|---|
-| 1 | Add pre-LLM `javac` compilation check | 100% of compile errors (9 cases) | Medium |
-| 2 | Add sandboxed execution with 2s timeout | Infinite loops, runtime crashes (4 cases) | High |
-| 3 | Add test case comparison (expected vs actual) | Logic bugs, wrong-problem detection | High |
-| 4 | Rework prompt: explicit syntax checklist | Feedback quality, generic template issue | Low |
-| 5 | Consider larger model (14B+) for logic tracing | Edge case and boundary bugs | N/A |
-
-> See [`docs/MASTER_EVALUATION_REPORT.md`](../docs/MASTER_EVALUATION_REPORT.md) for the full Phase 3 architecture blueprint.
-
----
-
-## TESTING COVERAGE GAPS
-
-Areas **not yet tested** that would complete the profile:
-
-- [ ] Multi-submission batches (3+ submissions in one request) — only tested 1-per-request
-- [ ] Concurrency / load testing — how does scoring change under parallel requests?
-- [ ] Repeated runs — consistency check (same input → same score?)
-- [ ] Non-Java languages (Python, C++) — does the evaluator work for other target languages?
-- [ ] Very long code (500+ lines) — does quality degrade with length?
-- [ ] Code with intentional security vulnerabilities — does the model flag them?
-- [ ] Questions requiring specific data structures (trees, graphs) — different domain
-
----
-
-*This profile is the single source of truth for all QWEN evaluator testing data.
-Update this document as new batches are run.*
