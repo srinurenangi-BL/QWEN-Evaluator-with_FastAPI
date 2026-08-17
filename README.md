@@ -69,15 +69,12 @@ QWEN-Evaluator-with_FastAPI/
 ├── templates/
 │   └── index.html              # Glassmorphic responsive frontend UI
 │
-├── docs/
-│   └── MASTER_EVALUATION_REPORT.md   # 3-Phase technical evaluation report
-│
 └── tests/
     ├── __init__.py              # Test package initializer
     ├── test_data.py             # Master test suite (all 48 controlled variants)
     ├── test_runner.py           # Master automated test runner
     ├── test_report.md           # Master automated test results (48 variants)
-    ├── model_behavior_profile.md# Consolidated model behavior analysis (48 variants)
+    ├── model_behavior_profile.md# Model behavior profile & empirical analysis
     └── raw_results.json         # Master raw API response data (48 variants)
 ```
 
@@ -137,30 +134,27 @@ Open **http://localhost:8000** in your browser for the Web UI.
 
 ## Testing & Evaluation
 
-The project includes a comprehensive automated testing framework with **48 controlled test variants** across 16 problem contexts:
+The project includes an automated testing framework with **48 controlled test variants** across 16 problem contexts:
 
 - **Structural & Syntax Variants (V1–V18):** Syntax errors, infinite loops, runtime crashes, logic bugs, dead code, wrong language, and poor style on array problems.
 - **Multi-Domain Variants (V19–V38):** Strings, prime numbers, vowel/consonant filtering, Euclidean GCD, and sorting checks.
 - **Classic Algorithm Variants (V39–V48):** Two Sum, Reverse Linked List, Valid Brackets, Kadane's Subarray, Merge Intervals, Coin Change DP, Longest Substring, Binary Tree Traversal, Cycle Detection, and Group Anagrams.
 
-**Master Benchmark Result: 41.7% accuracy** (20/48 passed)
+**Master Benchmark Result: 41.7% accuracy** (20/48 passed within strict ground truth bounds)
 
 ### Running Tests
 
 ```bash
-# Run the complete master test suite (48 tests)
+# Run the master test suite (48 tests)
 python tests/test_runner.py
 ```
 
-> **Note:** Tests make live API calls to the QWEN evaluator. Ensure the FastAPI server is running first.
-
-### Test Reports & Documentation
+### Evaluation Reports
 
 | Document | Location | Description |
 |----------|----------|-------------|
 | Master Test Report | [`tests/test_report.md`](tests/test_report.md) | Comprehensive results for all 48 test variants |
 | Model Behavior Profile | [`tests/model_behavior_profile.md`](tests/model_behavior_profile.md) | Strengths & blind spots analysis across 48 cases |
-| Master Technical Report | [`docs/MASTER_EVALUATION_REPORT.md`](docs/MASTER_EVALUATION_REPORT.md) | 3-Phase technical architecture & evaluation report |
 
 ---
 
@@ -169,27 +163,9 @@ python tests/test_runner.py
 | Branch | Description |
 |--------|-------------|
 | `main` | Default branch (empty) |
-| `old_code` | Original Phase 1 codebase (dual-call architecture) |
-| `current_code` | Phase 2 codebase (single-pass unified prompt) |
-| `Updated_code` | Latest development code with prompt refinements |
-
----
-
-## Known Model Limitations
-
-Based on extensive testing, `qwen2.5-coder:7b-instruct` has these confirmed blind spots:
-
-| Category | Detection Rate | Details |
-|----------|---------------|---------|
-| 🟢 Wrong Language | **100%** (3/3) | Always catches Python/JS submitted as Java |
-| 🟢 Correct Solutions | **100%** (6/6) | Consistently scores 9.2–9.8 |
-| 🟢 Dead Code / No Call | **100%** (2/2) | Detects uncalled methods |
-| 🔴 Compile Errors | **~11%** (1/9) | Cannot detect missing braces, semicolons, type errors |
-| 🔴 Infinite Loops | **0%** (0/2) | Misses missing loop increments entirely |
-| 🟡 Logic Bugs | **~30%** | Inconsistent — catches some, misses others |
-| 🟡 Style vs Correctness | **Poor** | Sometimes conflates poor formatting with bugs |
-
-> For the full analysis, see [`docs/MASTER_EVALUATION_REPORT.md`](docs/MASTER_EVALUATION_REPORT.md)
+| `old_code` | Dual-call architecture codebase |
+| `current_code` | Baseline single-pass prompt codebase |
+| `Updated_code` | Single-pass codebase with 48-case master test suite |
 
 ---
 
