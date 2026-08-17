@@ -134,12 +134,22 @@ async def review_code(request: CodeReviewRequest):
 
     logger.info(f"[INPUT RECEIVED] Target Language: {request.target_language} | Total Submissions: {len(request.submissions)}")
 
-    formatted = format_submissions(request.submissions)
-    eval_prompt = build_unified_evaluation_prompt(
-        target_language=request.target_language,
-        ques_ans_content_with_inst=formatted,
-        summary_gen_flag=True,
-    )
+    if len(request.submissions) == 1:
+        sub = request.submissions[0]
+        eval_prompt = build_unified_evaluation_prompt(
+            target_language=request.target_language,
+            question_text=sub.question_text,
+            student_code=sub.code,
+            return_answer=sub.return_answer,
+            specific_instructions=sub.specific_instructions,
+            summary_gen_flag=True,
+        )
+    else:
+        eval_prompt = build_unified_evaluation_prompt(
+            target_language=request.target_language,
+            submissions=request.submissions,
+            summary_gen_flag=True,
+        )
 
     logger.info(f"[STEP 1/2] Sending unified evaluation prompt ({len(eval_prompt)} chars) to model '{OLLAMA_MODEL}'...")
     eval_start = time.perf_counter()

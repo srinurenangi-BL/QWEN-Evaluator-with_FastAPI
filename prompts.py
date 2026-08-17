@@ -2,30 +2,82 @@ from typing import List, Optional
 from schemas import CodeSubmission, DEFAULT_TARGET_LANGUAGE
 
 
+def format_submission_block(
+    question_text: str,
+    student_code: str,
+    return_answer: Optional[str] = None,
+    specific_instructions: Optional[str] = None,
+    index: Optional[int] = None,
+) -> str:
+    """Format an individual submission into clearly demarcated sections for question, return specification, and student code."""
+    header = f"--- Question {index} ---\n" if index is not None else ""
+    parts = [header]
+    parts.append(f"QUESTION / PROBLEM STATEMENT:\n{question_text.strip()}")
+
+    if return_answer:
+        parts.append(f"EXPECTED RETURN / OUTPUT SPECIFICATION:\n{return_answer.strip()}")
+
+    if specific_instructions:
+        parts.append(f"SPECIFIC INSTRUCTIONS & CONSTRAINTS:\n{specific_instructions.strip()}")
+
+    parts.append(f"STUDENT'S SUBMITTED CODE:\n{student_code.strip()}")
+    return "\n\n".join([p for p in parts if p])
+
+
 def format_submissions(submissions: List[CodeSubmission]) -> str:
-    parts = []
+    """Format a list of CodeSubmission objects into distinct question/answer blocks."""
+    blocks = []
     for i, sub in enumerate(submissions, start=1):
-        block = f"--- Question {i} ---\n"
-        block += f"QUESTION: {sub.question_text}\n"
-        if sub.specific_instructions:
-            block += f"SPECIFIC INSTRUCTIONS: {sub.specific_instructions}\n"
-        block += f"CODE:\n{sub.code}"
-        parts.append(block)
-    return "\n\n".join(parts)
+        idx = i if len(submissions) > 1 else None
+        blocks.append(
+            format_submission_block(
+                question_text=sub.question_text,
+                student_code=sub.code,
+                return_answer=getattr(sub, "return_answer", None),
+                specific_instructions=sub.specific_instructions,
+                index=idx,
+            )
+        )
+    return "\n\n".join(blocks)
 
 
 def build_unified_evaluation_prompt(
     target_language: str = DEFAULT_TARGET_LANGUAGE,
-    ques_ans_content_with_inst: str = "",
+    question_text: Optional[str] = None,
+    student_code: Optional[str] = None,
+    return_answer: Optional[str] = None,
+    specific_instructions: Optional[str] = None,
+    submissions: Optional[List[CodeSubmission]] = None,
+    ques_ans_content_with_inst: Optional[str] = None,
     summary_gen_flag: bool = True,
 ) -> str:
+    """
+    Build the unified single-pass evaluation prompt.
+    Accepts individual variables (question_text, student_code, return_answer, specific_instructions),
+    a structured list of submissions, or a pre-formatted string for full backward compatibility.
+    """
+    # 1. Resolve content block from separate variables or pre-formatted input
+    if question_text and student_code:
+        content_block = format_submission_block(
+            question_text=question_text,
+            student_code=student_code,
+            return_answer=return_answer,
+            specific_instructions=specific_instructions,
+        )
+    elif submissions:
+        content_block = format_submissions(submissions)
+    elif ques_ans_content_with_inst:
+        content_block = ques_ans_content_with_inst
+    else:
+        content_block = "No code submissions provided."
+
     return f"""You are an expert, rigorous, and deterministic automated code grader.
 Your task is to evaluate the submitted code strictly against the target programming language and question requirements.
 
 EXPECTED TARGET LANGUAGE: {target_language}
 
 SUBMISSIONS TO EVALUATE:
-{ques_ans_content_with_inst}
+{content_block}
 
 ============================================================
 EVALUATION PROTOCOL & SCORING RULES (MANDATORY):
@@ -94,11 +146,22 @@ OUTPUT FORMAT (JSON ONLY, NO MARKDOWN, NO FLUFF):
 
 def build_evaluation_prompt(
     target_language: str = DEFAULT_TARGET_LANGUAGE,
-    ques_ans_content_with_inst: str = "",
+    question_text: Optional[str] = None,
+    student_code: Optional[str] = None,
+    return_answer: Optional[str] = None,
+    specific_instructions: Optional[str] = None,
+    submissions: Optional[List[CodeSubmission]] = None,
+    ques_ans_content_with_inst: Optional[str] = None,
     summary_gen_flag: bool = True,
 ) -> str:
+    """Evaluation prompt builder wrapper."""
     return build_unified_evaluation_prompt(
         target_language=target_language,
+        question_text=question_text,
+        student_code=student_code,
+        return_answer=return_answer,
+        specific_instructions=specific_instructions,
+        submissions=submissions,
         ques_ans_content_with_inst=ques_ans_content_with_inst,
         summary_gen_flag=summary_gen_flag,
     )
