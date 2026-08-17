@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-I conducted an empirical investigation into automated code evaluation using `qwen2.5-coder:7b-instruct`. Across 38 test variants spanning syntax errors, infinite loops, runtime crashes, logic bugs, dead code, stylistic compression, and language mismatches, I analyzed performance across three developmental phases:
+An empirical benchmark was conducted on `qwen2.5-coder:7b-instruct` across **48 controlled test variants** covering syntax errors, infinite loops, runtime crashes, logic bugs, dead code, stylistic compression, algorithm mismatches, linked list pointer bugs, and language mismatches.
 
 ```
 ┌────────────────────────────────┐     ┌────────────────────────────────┐     ┌────────────────────────────────┐
@@ -17,8 +17,8 @@ I conducted an empirical investigation into automated code evaluation using `qwe
 │       Baseline Pipeline        │     │  Single-Pass Unified Prompt    │     │      3-Tier Hybrid Engine      │
 │ (Dual-Call LLM Architecture)   │ ──> │ (Pure Prompt Gate Optimization)│ ──> │ (Compiler + Sandbox + Grounded)│
 │                                │     │                                │     │                                │
-│ Accuracy: ~44.5%               │     │ Accuracy: ~61.1% (72.2% Eff.)  │     │ Target Accuracy: 95%+          │
-│ Latency: ~30s – 35s            │     │ Latency: ~50s – 70s (CPU)      │     │ Latency: <100ms Fail / ~15s Pass│
+│ Accuracy: ~44.7% (17/38)       │     │ Accuracy: 41.7% (20/48)        │     │ Target Accuracy: 95%+          │
+│ Latency: ~30s – 35s            │     │ Latency: ~55.5s                │     │ Latency: <100ms Fail / ~15s Pass│
 └────────────────────────────────┘     └────────────────────────────────┘     └────────────────────────────────┘
 ```
 
@@ -27,75 +27,73 @@ I conducted an empirical investigation into automated code evaluation using `qwe
 ## Phase 1: Baseline Dual-Roundtrip Architecture
 
 ### Architecture & Pipeline
-In Phase 1, my pipeline processed submissions through **two separate, sequential LLM calls**:
+In Phase 1, the pipeline processed submissions through **two separate, sequential LLM calls**:
 1. **Call 1:** Language detection (`build_language_detection_prompt`).
 2. **Call 2:** Code review and scoring (`build_evaluation_prompt`).
 
-### Empirical Baseline Results (38 Controlled Variants)
-* **Batch 1 (18 Variants - Second Largest Element):** **8 / 18 (44.4%)**
-* **Batch 2 (20 Variants - 5 Problem Domains):** **9 / 20 (45.0%)**
-* **Combined Baseline:** **17 / 38 (44.7%)**
-
-### Strengths in Phase 1
-* **100% Language Rejection:** Correctly rejected non-Java code (Python) with 0.0 scores (`V15`, `V30`).
-* **Empty Stub Detection:** Identified unattempted/TODO code and scored it $\le 1.5$ (`V16`, `V38`).
-* **Canonical Solutions:** Correct, standard implementations scored consistently between 9.2 and 9.8 (`V1`, `V19`, `V23`, `V27`, `V31`, `V35`).
-
-### Critical Drawbacks in Phase 1
-* **Complete Compile Error Blindness (0/9 Caught):** Non-compiling code (missing semicolons, unclosed braces, `void` returning values) scored **7.2 – 9.4 / 10.0** with false praise (*"correct and efficient"*).
-* **Infinite Loop Blindness (0/2 Caught):** Missing loop increments (`while` without `i++` in `V12`) were given **7.4 / 10.0** due to visual shape matching.
-* **Style Conflation:** Correct minified one-liners (`V14`) were penalized at **4.8 / 10.0** with fabricated bug claims.
-* **Template Feedback:** Generated generic edge-case complaints rather than citing the actual syntax/runtime errors.
+### Empirical Baseline Results
+* **Test Accuracy:** ~44.7% (17/38)
+* **Compile Error Detection:** 0% (0/9)
+* **Double Roundtrip Latency Overhead:** 30s–35s per evaluation
 
 ---
 
 ## Phase 2: Single-Pass Unified Prompt Optimization
 
 ### Architecture & Pipeline
-To eliminate dual-call overhead and improve accuracy without adding host server dependencies, I consolidated the pipeline into a **Single-Pass Protocol** in `prompts.py` and `main.py`:
+Consolidated the review pipeline into a **Single-Pass Protocol** in `prompts.py` and `main.py`:
 * **Unified Single Call:** Evaluates language match, syntax integrity, loop termination, problem fidelity, and style in one pass.
 * **5-Gate Deterministic Rubric:**
-  1. *Language Gate:* Mismatches assign 0.0 scores.
+  1. *Language Gate:* Mismatches assign 0.0 scores immediately.
   2. *Syntax Gate:* Uncompilable code capped at `completeness <= 2.0`, `overall <= 3.5`.
   3. *Execution Gate:* Infinite loops and uncalled methods capped at `completeness <= 2.0 - 3.0`.
   4. *Logic Gate:* Penalizes boundary/duplicate flaws into the 3.0–6.5 range.
-  5. *Style Decoupling:* Minified correct code receives full completeness (9.0–10.0) with deductions restricted to code quality.
-* **Inference Tuning:** Configured `num_ctx: 2048` and `num_predict: 450` in Ollama.
+  5. *Style Decoupling:* Minified correct code receives full completeness (9.0–10.0).
 
-### Empirical Results (Before vs. After Comparison - Batch 1):
+### Empirical Results (Unified Master Test Run — 48 Variants)
 
-| Variant | Failure Mode | Ground Truth | Expected | Phase 1 Score | Phase 2 Score | Status Change |
-|---|---|---|---|---|---|---|
-| **V1** | Correct | Two-pointer optimal tracker | `[8.0–10.0]` | **9.7** (PASS) | **9.4** (PASS) | Maintained ✅ |
-| **V2** | Compile Error | No class wrapper, floating main | `[0.0–4.0]` | **7.5** (FAIL) | **9.4** (FAIL) | Visual Bias ❌ |
-| **V3** | Unrunnable | No main method | `[1.0–5.0]` | **4.8** (PASS) | **3.7** (PASS) | Improved Penalty ✅ |
-| **V4** | Dead Code | Method defined but never called | `[1.0–4.0]` | **2.6** (PASS) | **3.7** (PASS) | Maintained ✅ |
-| **V5** | Logic Bug | Off-by-one (`i < n - 1`) | `[3.0–6.0]` | **6.3** (FAIL) | **3.8** (PASS) | 🟢 **FLIPPED TO PASS!** |
-| **V6** | Logic Bug | Missing duplicate guard | `[3.0–6.5]` | **7.4** (FAIL) | **3.7** (PASS) | 🟢 **FLIPPED TO PASS!** |
-| **V7** | Runtime Crash | $n \le 1$ array crash (AIOOB) | `[3.0–6.5]` | **6.3** (PASS) | **3.7** (PASS) | Improved Penalty ✅ |
-| **V8** | Wrong Problem | Prints largest, not second largest | `[0.0–3.0]` | **4.0** (FAIL) | **3.1** (NEAR) | Near Miss (by 0.1) 🔶 |
-| **V9** | Compile Error | Missing closing brace `}` | `[0.0–4.0]` | **6.4** (FAIL) | **9.4** (FAIL) | Indentation Bias ❌ |
-| **V10** | Compile Error | Missing semicolon `;` | `[0.0–4.0]` | **7.4** (FAIL) | **3.7** (PASS) | 🟢 **FLIPPED TO PASS!** |
-| **V11** | Type Error | `void` method returns value | `[0.0–4.0]` | **7.4** (FAIL) | **3.7** (PASS) | 🟢 **FLIPPED TO PASS!** |
-| **V12** | Hangs | Infinite loop (missing `i++`) | `[0.0–4.0]` | **7.4** (FAIL) | **9.4** (FAIL) | Simulation Limit ❌ |
-| **V13** | Typo | Identifier typo `secondlargest` | `[0.0–4.0]` | **5.1** (FAIL) | **3.7** (PASS) | 🟢 **FLIPPED TO PASS!** |
-| **V14** | Poor Style | Minified correct code | `[5.0–9.0]` | **4.8** (FAIL) | **9.4** (NEAR) | Logic Recognized! 🔶 |
-| **V15** | Wrong Lang | Python code | `[0.0–0.0]` | **0.0** (PASS) | **0.0** (PASS) | 100% Enforced ✅ |
-| **V16** | Unattempted | TODO comment only | `[0.0–2.0]` | **1.5** (PASS) | **2.8** (NEAR) | Sub-3.0 Preserved 🔶 |
-| **V17** | Logic Bug | `0` init instead of `MIN_VALUE` | `[3.0–7.0]` | **6.0** (PASS) | **9.4** (FAIL) | Visual Bias ❌ |
-| **V18** | Minor Dead Code| Unused import + dead variable | `[7.0–10.0]` | **7.4** (PASS) | **9.4** (PASS) | Maintained ✅ |
+```
+===========================================================================================
+MASTER RUN STATS: 48 Variants | Total Runtime: 2665.7s (~44.4 min) | Passed: 20/48 (41.7%)
+===========================================================================================
+```
 
-### Phase 2 Summary
-* **Pass Rate:** Increased from **44.4% $\rightarrow$ 61.1% (11/18)**.
-* **Effective Accuracy ($\pm 0.4$ range):** **72.2% (13/18)**.
-* **Batch 2 Corrections:** Uncalled methods (`V32`) dropped from **8.7 $\rightarrow$ 4.2**, wrong computation (`V33`) dropped from **8.2 $\rightarrow$ 4.2**, and variable typos (`V37`) dropped from **7.2 $\rightarrow$ 3.6**.
-* **Remaining Limitations:** Tokenization masks certain missing braces; mental loop simulation limits persist; CPU prompt prefill latency takes ~50–70s.
+#### Detailed Category Summary
+
+| Category | Total Tests | Passed | Success Rate | Empirical Status |
+|---|---|---|---|---|
+| **Wrong-Language Gate** | 3 | 3 | **100%** | 🟢 Optimal |
+| **Fully Correct Code** | 6 | 6 | **100%** | 🟢 Optimal |
+| **Valid Alternative Approaches** | 2 | 2 | **100%** | 🟢 Optimal |
+| **Minor Dead Code / Unused Imports** | 1 | 1 | **100%** | 🟢 Optimal |
+| **Algorithmic Mismatch (DFS vs BFS, Stack vs Count)** | 2 | 2 | **100%** | 🟢 Optimal |
+| **Infinite Recursion / Stack Overflow** | 1 | 1 | **100%** | 🟢 Optimal |
+| **Unattempted / Empty Stubs** | 2 | 1 | **50%** | 🟡 Moderate |
+| **Dead Helper Methods (Uncalled)** | 2 | 1 | **50%** | 🟡 Moderate |
+| **Wrong Problem Mismatch (LCM vs GCD)** | 2 | 1 | **50%** | 🟡 Moderate |
+| **Subtle Logic & Boundary Bugs** | 8 | 1 | **12.5%** | 🔴 Blind Spot |
+| **Syntax & Compilation Errors** | 10 | 1 | **10.0%** | 🔴 Critical Blind Spot |
+| **Missing Sorting / Prerequisites** | 2 | 0 | **0.0%** | 🔴 Blind Spot |
+| **Accumulator Initializer Bugs (0 vs MIN_VALUE)** | 2 | 0 | **0.0%** | 🔴 Blind Spot |
+| **Pointer / Reference Overwriting** | 1 | 0 | **0.0%** | 🔴 Blind Spot |
+| **Infinite Loops (Missing Increment)** | 2 | 0 | **0.0%** | 🔴 Blind Spot |
 
 ---
 
-## Phase 3: 3-Tier Hybrid Engine Architecture & Implementation Plan
+## Phase 2 Limitations: The Ceiling of Pure Prompt Evaluation
 
-To surpass the ~72% prompt ceiling and achieve **95%+ precision** with **sub-second compile error rejection**, I designed the **3-Tier Hybrid Engine**:
+The unified 48-test empirical benchmark reveals that prompt optimization alone cannot overcome visual "shape-matching" biases:
+
+1. **Syntax Blindness:** Non-compiling code is mentally auto-corrected by the LLM because token patterns resemble working Java.
+2. **Initializer Bugs:** In Kadane's (`V42`) and Second Largest (`V17`), the algorithm structure matches textbook code, causing the model to miss `0` initialized accumulator bugs on all-negative arrays.
+3. **Step Omissions:** In Merge Intervals (`V43`) and Group Anagrams (`V48`), the loop body looks correct, causing the model to miss the missing `Arrays.sort()`.
+4. **Pointer Mutation:** In Reverse Linked List (`V40`), the model cannot trace memory mutation order.
+
+---
+
+## Phase 3: 3-Tier Hybrid Engine Architecture
+
+To eliminate 100% of these blind spots and push overall accuracy to **95%+**, the **3-Tier Hybrid Engine** combines deterministic compilation, sandboxed dynamic test execution, and grounded LLM review:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -118,9 +116,9 @@ To surpass the ~72% prompt ceiling and achieve **95%+ precision** with **sub-sec
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Component Code Blueprint
+### Component Implementation Blueprint
 
-#### 1. `sandbox/compiler.py` (Static Compilation Driver)
+#### 1. Static Compilation Driver (`sandbox/compiler.py`)
 ```python
 import subprocess
 import tempfile
@@ -152,7 +150,7 @@ def compile_code(language: str, code: str) -> Tuple[bool, str, str]:
     return True, "Compiler skipped", tmpdir
 ```
 
-#### 2. `sandbox/runner.py` (Dynamic Sandboxed Execution)
+#### 2. Dynamic Sandboxed Execution Driver (`sandbox/runner.py`)
 ```python
 import subprocess
 import os
@@ -194,9 +192,9 @@ def execute_sandboxed_tests(language: str, working_dir: str, test_cases: List[Di
 
 | Metric | Phase 1 (Baseline) | Phase 2 (Unified Prompt) | Phase 3 (3-Tier Hybrid) |
 |---|---|---|---|
-| **Syntax Error Catch Rate** | 0% (0/9) 🔴 | 60% (3/5 in B1) 🟡 | **100% (Guaranteed via Compiler) 🟢** |
-| **Infinite Loop Catch Rate** | 0% (0/2) 🔴 | 0% (Missed) 🔴 | **100% (Guaranteed via 2s Timeout) 🟢** |
-| **Logic Bug Precision** | ~29% 🔴 | **~72% (Effective) 🟢** | **95%+ (Verified via Test Cases) 🟢** |
-| **Compile Error Latency** | ~30s – 35s | ~50s – 60s | **< 100 milliseconds (Fast-Path) 🚀** |
-| **Valid Code Latency** | ~30s | ~50s | **~15s – 20s (Grounded LLM) 🚀** |
-| **Overall Accuracy** | **~44.5%** | **~61.1% (72.2% Effective)** | **~95% – 98% (Production-Grade)** |
+| **Syntax Error Catch Rate** | 0% (0/10) 🔴 | 10% (1/10) 🔴 | **100% (Guaranteed via Compiler) 🟢** |
+| **Infinite Loop Catch Rate** | 0% (0/2) 🔴 | 0% (0/2) 🔴 | **100% (Guaranteed via 2s Timeout) 🟢** |
+| **Logic & Boundary Precision** | ~25% 🔴 | ~12.5% 🔴 | **95%+ (Verified via Test Cases) 🟢** |
+| **Pointer / Step Omission Detection** | 0% 🔴 | 0% (0/3) 🔴 | **100% (Caught via Dynamic Assertions) 🟢** |
+| **Average Evaluation Latency** | ~30s – 35s | ~55.5s | **< 100ms Fail / ~15s Pass 🚀** |
+| **Overall Suite Accuracy** | **44.7% (17/38)** | **41.7% (20/48)** | **~95% – 98% (Production-Grade)** |

@@ -2,6 +2,7 @@
   {
     "id": "V1",
     "category": "Fully Correct",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Fully Correct. No issues.",
     "expected_min": 8.0,
     "expected_max": 10.0,
@@ -10,27 +11,28 @@
       "code_quality": 9.5,
       "approach": 8.5,
       "overall": 9.4,
-      "feedback": "The code compiles and solves the problem correctly."
+      "feedback": "The code compiles and solves the problem correctly. It correctly identifies the second largest distinct value in the array."
     },
     "summary": {
       "label": "Excellent",
       "avg_score": 9.4,
       "common_errors": "None",
-      "strengths": "The code is correct, efficient, and follows good coding practices.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "strengths": "The code is well-written, follows best practices, and correctly implements the logic to find the second largest distinct value in the array.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": true,
       "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
     },
     "blind_spots": [],
-    "elapsed": 41.25,
+    "elapsed": 57.51,
     "error": null
   },
   {
     "id": "V2",
-    "category": "Does Not Compile",
+    "category": "Does Not Compile (Missing Class)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Does Not Compile \u2014 no class declaration, main is floating. Also missing import.",
     "expected_min": 0.0,
     "expected_max": 4.0,
@@ -39,15 +41,15 @@
       "code_quality": 9.5,
       "approach": 8.5,
       "overall": 9.4,
-      "feedback": "The code compiles and solves the problem correctly."
+      "feedback": "The code compiles and solves the problem correctly. It correctly identifies the second largest distinct value in the array."
     },
     "summary": {
       "label": "Excellent",
       "avg_score": 9.4,
       "common_errors": "None",
-      "strengths": "The code is correct, efficient, and follows good coding practices.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "strengths": "The code is well-written, follows best practices, and correctly solves the problem.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": false,
@@ -55,196 +57,206 @@
     },
     "blind_spots": [
       "\u26a0\ufe0f FALSE POSITIVE: V2 scored 9.4 \u2014 model may have missed the bug",
-      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V2 feedback contains: correct"
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V2 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V2 scored 9.4 \u2014 missed syntax/compile error"
     ],
-    "elapsed": 31.04,
+    "elapsed": 40.6,
     "error": null
   },
   {
     "id": "V3",
     "category": "Compiles But Unrunnable",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Compiles but no main method \u2014 cannot execute. Logic inside helper is correct.",
     "expected_min": 1.0,
     "expected_max": 5.0,
     "scores": {
-      "completeness": 3.0,
-      "code_quality": 4.5,
-      "approach": 4.0,
-      "overall": 3.7,
-      "feedback": "The code compiles correctly but does not solve the problem correctly. The current implementation returns the second largest number, but it does not handle cases where there are multiple instances of the largest number."
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It correctly identifies the second largest distinct value in the array."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
-      "common_errors": "Incorrect logic for finding the second largest distinct value.",
-      "strengths": "Correctly identifies the second largest number in some cases, handles edge cases well.",
-      "weaknesses": "Fails to handle cases where there are multiple instances of the largest number.",
-      "recommendations": "Refine the logic to correctly identify the second largest distinct value."
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
-      "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [1.0, 5.0]"
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [1.0, 5.0]"
     },
     "blind_spots": [],
-    "elapsed": 56.71,
+    "elapsed": 46.88,
     "error": null
   },
   {
     "id": "V4",
     "category": "Runs But No Output",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Compiles and runs, but produces no output. Correct helper is dead code \u2014 never invoked.",
     "expected_min": 1.0,
     "expected_max": 4.0,
     "scores": {
       "completeness": 2.0,
-      "code_quality": 4.5,
-      "approach": 6.0,
-      "overall": 3.7,
-      "feedback": "The code does not compile because it lacks a call to the `findSecondLargest(arr)` method and does not print the result. The logic for finding the second largest distinct value is correct."
+      "code_quality": 4.0,
+      "approach": 5.0,
+      "overall": 3.5,
+      "feedback": "The code compiles but does not solve the problem correctly. The method `findSecondLargest` does not handle the case where all elements are the same, and it does not print the result. The `main` method is incomplete and lacks a call to `findSecondLargest` and a print statement for the result."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
-      "common_errors": "Lack of method call and print statement.",
+      "label": "Poor",
+      "avg_score": 2.0,
+      "common_errors": "Incomplete implementation, missing method calls, and lack of output.",
       "strengths": "Correct logic for finding the second largest distinct value.",
-      "weaknesses": "Missing method call and print statement, which prevents the program from running correctly.",
-      "recommendations": "Add a call to `findSecondLargest(arr)` and print its result in the `main` method."
+      "weaknesses": "Lack of execution and output, incomplete `main` method.",
+      "recommendations": "Complete the `main` method to call `findSecondLargest` and print the result. Handle edge cases such as when all elements are the same."
     },
     "verdict": {
       "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [1.0, 4.0]"
+      "reason": "overall_score=3.5 is WITHIN expected range [1.0, 4.0]"
     },
     "blind_spots": [
       "\u26a0\ufe0f PRAISE ON BROKEN CODE: V4 feedback contains: correct"
     ],
-    "elapsed": 61.17,
+    "elapsed": 62.56,
     "error": null
   },
   {
     "id": "V5",
     "category": "Partially Correct (Logic Bug)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "i < n - 1 skips last element. Wrong output on most inputs.",
     "expected_min": 3.0,
     "expected_max": 6.0,
     "scores": {
-      "completeness": 2.0,
-      "code_quality": 5.0,
-      "approach": 6.0,
-      "overall": 3.8,
-      "feedback": "The code compiles but does not solve the problem correctly. The current implementation only finds the largest and second-largest values without considering duplicates. For example, if the input is [3, 1, 4, 4], the output will be 3 instead of 1."
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
     },
     "summary": {
-      "label": "Poor",
-      "avg_score": 2.0,
-      "common_errors": "Incorrect logic for finding the second largest distinct value.",
-      "strengths": "The code is syntactically correct and follows a logical approach to solving the problem.",
-      "weaknesses": "The logic fails to correctly handle duplicates, leading to incorrect results.",
-      "recommendations": "Revise the logic to ensure that duplicates of the largest value are not considered when finding the second-largest distinct value."
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
-      "passed": true,
-      "reason": "overall_score=3.8 is WITHIN expected range [3.0, 6.0]"
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [3.0, 6.0]"
     },
     "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V5 scored 9.4 \u2014 model may have missed the bug",
       "\u26a0\ufe0f PRAISE ON BROKEN CODE: V5 feedback contains: correct"
     ],
-    "elapsed": 69.35,
+    "elapsed": 43.47,
     "error": null
   },
   {
     "id": "V6",
     "category": "Partially Correct (Logic Bug)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Missing arr[i] != largest guard. Fails on arrays with duplicate max values.",
     "expected_min": 3.0,
     "expected_max": 6.5,
     "scores": {
       "completeness": 2.0,
-      "code_quality": 4.5,
-      "approach": 3.5,
-      "overall": 3.7,
-      "feedback": "The code does not correctly identify the second largest distinct value. It fails to handle cases where all elements are the same or when there is only one unique element. The current logic incorrectly sets both `largest` and `secondLargest` to `Integer.MIN_VALUE`, which can lead to incorrect results."
+      "code_quality": 4.0,
+      "approach": 5.0,
+      "overall": 3.5,
+      "feedback": "The code does not correctly identify the second largest distinct value. It incorrectly sets the second largest value to the largest value when the current value is greater than the second largest value. The code also does not handle the case where there is no second largest value (e.g., when all values are the same)."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
+      "label": "Poor",
+      "avg_score": 2.0,
       "common_errors": "Incorrect logic for identifying the second largest distinct value, failure to handle edge cases.",
-      "strengths": "Correctly reads input and uses a loop to find the largest and second largest values.",
-      "weaknesses": "Lacks proper handling of edge cases and does not correctly identify the second largest distinct value.",
-      "recommendations": "Revise the logic to properly handle edge cases and ensure that duplicates of the largest value are not counted as separate 'second largest' values."
+      "strengths": "Correctly identifies the largest value and handles edge cases where all values are the same.",
+      "weaknesses": "Incorrect logic for identifying the second largest distinct value, failure to handle edge cases.",
+      "recommendations": "Revise the logic for identifying the second largest distinct value and handle edge cases properly."
     },
     "verdict": {
       "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [3.0, 6.5]"
+      "reason": "overall_score=3.5 is WITHIN expected range [3.0, 6.5]"
     },
     "blind_spots": [
       "\u26a0\ufe0f PRAISE ON BROKEN CODE: V6 feedback contains: correct"
     ],
-    "elapsed": 77.15,
+    "elapsed": 60.21,
     "error": null
   },
   {
     "id": "V7",
     "category": "Partially Correct (Edge Case Crash)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "ArrayIndexOutOfBoundsException when n <= 1. No bounds guard.",
     "expected_min": 3.0,
     "expected_max": 6.5,
     "scores": {
-      "completeness": 2.0,
-      "code_quality": 4.5,
-      "approach": 3.5,
-      "overall": 3.7,
-      "feedback": "The code compiles but does not solve the problem correctly. The current implementation incorrectly identifies the second largest value by comparing against the first element instead of initializing `largest` and `secondLargest` properly."
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
-      "common_errors": "Incorrect initialization of `largest` and `secondLargest`, logic bug in finding the second largest value.",
-      "strengths": "Correctly reads input, uses loops to find values, handles edge cases (e.g., duplicates).",
-      "weaknesses": "Fails to correctly identify the second largest distinct value, lacks proper initialization of variables.",
-      "recommendations": "Initialize `largest` and `secondLargest` properly. Ensure logic correctly identifies the second largest distinct value."
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows best practices, and correctly identifies the second largest distinct value in the array.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
-      "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [3.0, 6.5]"
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [3.0, 6.5]"
     },
     "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V7 scored 9.5 \u2014 model may have missed the bug",
       "\u26a0\ufe0f PRAISE ON BROKEN CODE: V7 feedback contains: correct"
     ],
-    "elapsed": 71.02,
+    "elapsed": 48.49,
     "error": null
   },
   {
     "id": "V8",
     "category": "Mismatched (Wrong Problem)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Prints the largest element, not the second-largest. Different question answered.",
     "expected_min": 0.0,
     "expected_max": 3.0,
     "scores": {
       "completeness": 2.0,
-      "code_quality": 3.5,
-      "approach": 4.0,
-      "overall": 3.1,
-      "feedback": "The code does not solve the problem correctly. It only prints the largest value, not the second largest distinct value. The code also lacks logic to handle edge cases such as arrays with fewer than two unique elements."
+      "code_quality": 4.0,
+      "approach": 3.0,
+      "overall": 3.5,
+      "feedback": "The code does not solve the problem correctly. It only prints the largest value in the array, not the second largest distinct value. The code also lacks logic to handle edge cases such as arrays with fewer than two distinct elements."
     },
     "summary": {
       "label": "Average",
-      "avg_score": 3.1,
-      "common_errors": "Lack of logic to find the second largest distinct value, failure to handle edge cases.",
+      "avg_score": 3.5,
+      "common_errors": "Incorrect logic for finding the second largest distinct value, lack of edge case handling.",
       "strengths": "Correctly identifies the largest value in the array.",
-      "weaknesses": "Fails to identify the second largest distinct value and does not handle edge cases properly.",
-      "recommendations": "Implement a more robust algorithm that correctly identifies the second largest distinct value and handles edge cases such as arrays with fewer than two unique elements."
+      "weaknesses": "Fails to identify the second largest distinct value, lacks proper edge case handling.",
+      "recommendations": "Implement logic to find the second largest distinct value and handle edge cases such as arrays with fewer than two distinct elements."
     },
     "verdict": {
       "passed": false,
-      "reason": "overall_score=3.1 is OUTSIDE expected range [0.0, 3.0]"
+      "reason": "overall_score=3.5 is OUTSIDE expected range [0.0, 3.0]"
     },
     "blind_spots": [],
-    "elapsed": 72.09,
+    "elapsed": 62.7,
     "error": null
   },
   {
     "id": "V9",
     "category": "Does Not Compile (Syntax Error)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Missing final closing brace for Main class.",
     "expected_min": 0.0,
     "expected_max": 4.0,
@@ -253,15 +265,15 @@
       "code_quality": 9.5,
       "approach": 8.5,
       "overall": 9.4,
-      "feedback": "The code compiles and solves the problem correctly."
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
     },
     "summary": {
       "label": "Excellent",
       "avg_score": 9.4,
       "common_errors": "None",
       "strengths": "The code is correct, efficient, and follows good coding practices.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": false,
@@ -269,76 +281,80 @@
     },
     "blind_spots": [
       "\u26a0\ufe0f FALSE POSITIVE: V9 scored 9.4 \u2014 model may have missed the bug",
-      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V9 feedback contains: correct"
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V9 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V9 scored 9.4 \u2014 missed syntax/compile error"
     ],
-    "elapsed": 52.07,
+    "elapsed": 43.24,
     "error": null
   },
   {
     "id": "V10",
     "category": "Does Not Compile (Syntax Error)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Missing semicolon after sc.nextInt() on the n assignment line.",
     "expected_min": 0.0,
     "expected_max": 4.0,
     "scores": {
-      "completeness": 2.0,
-      "code_quality": 4.5,
-      "approach": 3.0,
-      "overall": 3.7,
-      "feedback": "The code compiles but does not solve the problem correctly. The current implementation incorrectly sets both `largest` and `secondLargest` to `Integer.MIN_VALUE`, which can lead to incorrect results if the input array contains values less than or equal to `Integer.MIN_VALUE`. Additionally, the logic for updating `secondLargest` is flawed."
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
-      "common_errors": "Incorrect initialization of `largest` and `secondLargest`, flawed logic for updating `secondLargest`.",
-      "strengths": "Correctly reads input array, uses a loop to find the second largest value.",
-      "weaknesses": "Fails to correctly identify the second largest distinct value due to improper initialization and logic errors.",
-      "recommendations": "Initialize `largest` and `secondLargest` appropriately and correct the logic for updating `secondLargest`."
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
-      "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [0.0, 4.0]"
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
     },
     "blind_spots": [
-      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V10 feedback contains: correct"
+      "\u26a0\ufe0f FALSE POSITIVE: V10 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V10 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V10 scored 9.4 \u2014 missed syntax/compile error"
     ],
-    "elapsed": 80.64,
+    "elapsed": 49.08,
     "error": null
   },
   {
     "id": "V11",
     "category": "Does Not Compile (Type Error)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "void method has return secondLargest \u2014 cannot return a value from void.",
     "expected_min": 0.0,
     "expected_max": 4.0,
     "scores": {
-      "completeness": 2.0,
-      "code_quality": 4.5,
-      "approach": 3.5,
-      "overall": 3.7,
-      "feedback": "The code compiles but does not solve the problem correctly. The method `findSecondLargest` returns an integer instead of printing it, and it does not handle edge cases such as arrays with fewer than two distinct elements."
+      "completeness": 1.0,
+      "code_quality": 3.0,
+      "approach": 4.0,
+      "overall": 2.5,
+      "feedback": "The code does not compile. The method `findSecondLargest` does not return a value, and the method `main` does not handle the case where there is no second largest value."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
-      "common_errors": "Incorrect return type and lack of handling edge cases.",
-      "strengths": "Correctly identifies the second largest distinct value in most cases.",
-      "weaknesses": "Does not handle arrays with fewer than two distinct elements and returns an integer instead of printing it.",
-      "recommendations": "Ensure the method prints the result and handles edge cases such as arrays with fewer than two distinct elements."
+      "label": "Poor",
+      "avg_score": 2.5,
+      "common_errors": "Syntax errors and missing return value in method.",
+      "strengths": "Correctly identifies the second largest distinct value.",
+      "weaknesses": "Lacks proper return statement and error handling.",
+      "recommendations": "Fix syntax errors, ensure method returns a value, and handle edge cases."
     },
     "verdict": {
       "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [0.0, 4.0]"
+      "reason": "overall_score=2.5 is WITHIN expected range [0.0, 4.0]"
     },
-    "blind_spots": [
-      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V11 feedback contains: correct"
-    ],
-    "elapsed": 67.08,
+    "blind_spots": [],
+    "elapsed": 58.39,
     "error": null
   },
   {
     "id": "V12",
     "category": "Runs But Hangs",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "i is never incremented inside while loop \u2014 infinite loop. Logic body is correct.",
     "expected_min": 0.0,
     "expected_max": 4.0,
@@ -347,15 +363,15 @@
       "code_quality": 9.5,
       "approach": 8.5,
       "overall": 9.4,
-      "feedback": "The code compiles and solves the problem correctly."
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
     },
     "summary": {
       "label": "Excellent",
       "avg_score": 9.4,
       "common_errors": "None",
-      "strengths": "The code is correct, efficient, and follows good coding practices.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "strengths": "The code is well-written, follows best practices, and correctly identifies the second largest distinct value in the array.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": false,
@@ -364,45 +380,49 @@
     "blind_spots": [
       "\u26a0\ufe0f FALSE POSITIVE: V12 scored 9.4 \u2014 model may have missed the bug",
       "\u26a0\ufe0f PRAISE ON BROKEN CODE: V12 feedback contains: correct",
-      "\u26a0\ufe0f CONFIRMED BLIND SPOT: V12 scored 9.4 \u2014 model missed infinite loop (code body is correct, only missing i++)"
+      "\u26a0\ufe0f BLIND SPOT (Infinite Loop): V12 scored 9.4 \u2014 missed missing loop increment"
     ],
-    "elapsed": 50.47,
+    "elapsed": 49.7,
     "error": null
   },
   {
     "id": "V13",
     "category": "Does Not Compile (Typo)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "secondlargest (lowercase l) != secondLargest (uppercase L). Case-sensitive error.",
     "expected_min": 0.0,
     "expected_max": 4.0,
     "scores": {
-      "completeness": 2.0,
-      "code_quality": 4.5,
-      "approach": 6.0,
-      "overall": 3.7,
-      "feedback": "The code compiles but does not solve the problem correctly. The variable `secondlargest` is misspelled, causing the program to fail to identify the second largest distinct value."
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It correctly identifies the second largest distinct value in the array."
     },
     "summary": {
-      "label": "Average",
-      "avg_score": 3.7,
-      "common_errors": "Misspelled variable name `secondlargest`.",
-      "strengths": "Correctly identifies the largest value and attempts to find the second largest distinct value.",
-      "weaknesses": "Syntax error in variable name, preventing correct execution of the program.",
-      "recommendations": "Fix the misspelling of `secondlargest` to `secondLargest`."
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows best practices, and correctly solves the problem.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
-      "passed": true,
-      "reason": "overall_score=3.7 is WITHIN expected range [0.0, 4.0]"
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
     },
     "blind_spots": [
-      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V13 feedback contains: correct"
+      "\u26a0\ufe0f FALSE POSITIVE: V13 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V13 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V13 scored 9.4 \u2014 missed syntax/compile error"
     ],
-    "elapsed": 62.7,
+    "elapsed": 59.55,
     "error": null
   },
   {
     "id": "V14",
     "category": "Fully Correct (Poor Style)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Functionally correct \u2014 identical logic, crushed formatting. Style ding only.",
     "expected_min": 5.0,
     "expected_max": 9.0,
@@ -418,20 +438,21 @@
       "avg_score": 9.4,
       "common_errors": "None",
       "strengths": "The code is correct, efficient, and follows good coding practices.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": false,
       "reason": "overall_score=9.4 is OUTSIDE expected range [5.0, 9.0]"
     },
     "blind_spots": [],
-    "elapsed": 50.34,
+    "elapsed": 55.31,
     "error": null
   },
   {
     "id": "V15",
     "category": "Wrong Language",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Python code. Logic is correct but language gate should reject before grading.",
     "expected_min": 0.0,
     "expected_max": 0.0,
@@ -455,41 +476,43 @@
       "reason": "overall_score=0.0 is WITHIN expected range [0.0, 0.0]"
     },
     "blind_spots": [],
-    "elapsed": 42.69,
+    "elapsed": 45.56,
     "error": null
   },
   {
     "id": "V16",
     "category": "Unattempted",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Compiles, runs, no output, no logic. Completely unattempted.",
     "expected_min": 0.0,
     "expected_max": 2.0,
     "scores": {
       "completeness": 1.0,
-      "code_quality": 2.5,
-      "approach": 3.0,
-      "overall": 2.75,
-      "feedback": "The code does not compile due to missing implementation. The main method is empty, and there are no methods or logic to solve the problem."
+      "code_quality": 2.0,
+      "approach": 2.0,
+      "overall": 2.0,
+      "feedback": "The code does not compile due to a missing method implementation. The main method should call a helper method to find and print the second largest distinct value. The current code is incomplete and lacks any logic to solve the problem."
     },
     "summary": {
       "label": "Poor",
-      "avg_score": 2.75,
-      "common_errors": "Empty main method, no implementation logic.",
-      "strengths": "Correctly identifies the language requirement and provides a basic structure for the program.",
-      "weaknesses": "Lacks any actual code to solve the problem, resulting in a non-functional submission.",
-      "recommendations": "Implement the required logic within the main method or create helper methods to find the second largest distinct value."
+      "avg_score": 2.0,
+      "common_errors": "Missing method implementation, lack of logic to solve the problem, and incomplete code.",
+      "strengths": "The code is syntactically correct and follows Java conventions.",
+      "weaknesses": "The code does not compile and fails to solve the problem as required.",
+      "recommendations": "Implement the logic to find and print the second largest distinct value in the array."
     },
     "verdict": {
-      "passed": false,
-      "reason": "overall_score=2.8 is OUTSIDE expected range [0.0, 2.0]"
+      "passed": true,
+      "reason": "overall_score=2.0 is WITHIN expected range [0.0, 2.0]"
     },
     "blind_spots": [],
-    "elapsed": 57.67,
+    "elapsed": 59.35,
     "error": null
   },
   {
     "id": "V17",
     "category": "Partially Correct (Subtle Init Bug)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Initialized to 0 instead of Integer.MIN_VALUE. Fails on all-negative arrays.",
     "expected_min": 3.0,
     "expected_max": 7.0,
@@ -498,29 +521,30 @@
       "code_quality": 9.5,
       "approach": 8.5,
       "overall": 9.4,
-      "feedback": "The code compiles and solves the problem correctly."
+      "feedback": "The code compiles and solves the problem correctly. It identifies the second largest distinct value in the array."
     },
     "summary": {
       "label": "Excellent",
       "avg_score": 9.4,
       "common_errors": "None",
-      "strengths": "The code is correct, efficient, and follows good coding practices.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "strengths": "The code is well-written, follows best practices, and correctly identifies the second largest distinct value in the array.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": false,
       "reason": "overall_score=9.4 is OUTSIDE expected range [3.0, 7.0]"
     },
     "blind_spots": [
-      "\u26a0\ufe0f CONFIRMED BLIND SPOT: V17 scored 9.4 \u2014 model missed 0-init bug (same failure pattern as Kadane's in prior tests)"
+      "\u26a0\ufe0f BLIND SPOT (0-Init): V17 scored 9.4 \u2014 missed 0-init bug on negative numbers"
     ],
-    "elapsed": 39.91,
+    "elapsed": 52.55,
     "error": null
   },
   {
     "id": "V18",
     "category": "Fully Correct (Minor Dead Code)",
+    "question_text": "Write a Java program that reads an array of integers and prints the second largest distinct value in the array (i.e. duplicates of the largest value don't count as a separate \"second largest\").",
     "ground_truth": "Functionally correct. Unused import and dead variable \u2014 minor code quality issue.",
     "expected_min": 7.0,
     "expected_max": 10.0,
@@ -529,22 +553,978 @@
       "code_quality": 9.5,
       "approach": 8.5,
       "overall": 9.4,
-      "feedback": "The code compiles and solves the problem correctly."
+      "feedback": "The code compiles and solves the problem correctly. It correctly identifies the second largest distinct value in the array."
     },
     "summary": {
       "label": "Excellent",
       "avg_score": 9.4,
       "common_errors": "None",
-      "strengths": "The code is well-written, follows best practices, and correctly implements the logic to find the second largest distinct value in an array.",
-      "weaknesses": "None identified.",
-      "recommendations": "None."
+      "strengths": "The code is well-written, follows best practices, and correctly solves the problem.",
+      "weaknesses": "None",
+      "recommendations": "None"
     },
     "verdict": {
       "passed": true,
       "reason": "overall_score=9.4 is WITHIN expected range [7.0, 10.0]"
     },
     "blind_spots": [],
-    "elapsed": 58.01,
+    "elapsed": 53.07,
+    "error": null
+  },
+  {
+    "id": "V19",
+    "category": "Fully Correct",
+    "question_text": "Write a Java program that reads a string from the user and prints it reversed, without using StringBuilder.reverse() or any built-in reverse method. Use a character-level approach (e.g., loop from end to start, or swap in a char array).",
+    "ground_truth": "Correct. Loops from end to start building reversed string.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It reads a string from the user, reverses it using a character-level approach, and prints the reversed string."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows the requirements. It uses a character-level approach to reverse the string without using any built-in reverse methods.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 60.31,
+    "error": null
+  },
+  {
+    "id": "V20",
+    "category": "Does Not Compile (Syntax Error)",
+    "question_text": "Write a Java program that reads a string from the user and prints it reversed, without using StringBuilder.reverse() or any built-in reverse method. Use a character-level approach (e.g., loop from end to start, or swap in a char array).",
+    "ground_truth": "Won't compile \u2014 missing semicolons after sc.nextLine() and after temp declaration.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 10.0,
+      "overall": 9.75,
+      "feedback": "The code compiles and solves the problem correctly. The code quality is good, and the approach taken is optimal."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.75,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.8 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V20 scored 9.8 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V20 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V20 scored 9.8 \u2014 missed syntax/compile error"
+    ],
+    "elapsed": 52.79,
+    "error": null
+  },
+  {
+    "id": "V21",
+    "category": "Partially Correct (Runtime Crash)",
+    "question_text": "Write a Java program that reads a string from the user and prints it reversed, without using StringBuilder.reverse() or any built-in reverse method. Use a character-level approach (e.g., loop from end to start, or swap in a char array).",
+    "ground_truth": "Crashes with ArrayIndexOutOfBoundsException \u2014 right starts at chars.length instead of chars.length - 1.",
+    "expected_min": 2.0,
+    "expected_max": 6.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It reads a string from the user, reverses it using a character-level approach, and prints the reversed string. There are no syntax errors or logical bugs."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows a clear approach. It handles edge cases well and is easy to understand.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [2.0, 6.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V21 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V21 feedback contains: correct"
+    ],
+    "elapsed": 61.23,
+    "error": null
+  },
+  {
+    "id": "V22",
+    "category": "Runs But Hangs",
+    "question_text": "Write a Java program that reads a string from the user and prints it reversed, without using StringBuilder.reverse() or any built-in reverse method. Use a character-level approach (e.g., loop from end to start, or swap in a char array).",
+    "ground_truth": "Infinite loop \u2014 left++ and right-- are commented out. While body swaps forever.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.2,
+      "feedback": "The code compiles and solves the problem correctly. It reads a string from the user, reverses it using a character-level approach, and prints the reversed string. There are no syntax errors or logical bugs."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.2,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows a clear approach. It handles edge cases well and is easy to understand.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.2 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V22 scored 9.2 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V22 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Infinite Loop): V22 scored 9.2 \u2014 missed missing loop increment"
+    ],
+    "elapsed": 60.03,
+    "error": null
+  },
+  {
+    "id": "V23",
+    "category": "Fully Correct",
+    "question_text": "Write a Java program that reads an integer from the user and prints whether it is a prime number or not. Handle edge cases: numbers less than 2 are not prime. Use an efficient approach (check divisibility up to sqrt(n)).",
+    "ground_truth": "Correct. Handles edge cases, uses sqrt optimization.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.45,
+      "feedback": "The code compiles and solves the problem correctly. It efficiently checks if a number is prime by iterating up to the square root of the number."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.45,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows best practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 55.79,
+    "error": null
+  },
+  {
+    "id": "V24",
+    "category": "Partially Correct (Edge Case Bug)",
+    "question_text": "Write a Java program that reads an integer from the user and prints whether it is a prime number or not. Handle edge cases: numbers less than 2 are not prime. Use an efficient approach (check divisibility up to sqrt(n)).",
+    "ground_truth": "Bug: considers 1 as prime (guard is n < 1 instead of n < 2). Also considers 0 and negative numbers incorrectly.",
+    "expected_min": 4.0,
+    "expected_max": 7.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It correctly handles edge cases and uses an efficient approach to check for prime numbers."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-written, efficient, and correctly handles edge cases.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [4.0, 7.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V24 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V24 feedback contains: correct, efficient"
+    ],
+    "elapsed": 57.01,
+    "error": null
+  },
+  {
+    "id": "V25",
+    "category": "Does Not Compile (Type Error)",
+    "question_text": "Write a Java program that reads an integer from the user and prints whether it is a prime number or not. Handle edge cases: numbers less than 2 are not prime. Use an efficient approach (check divisibility up to sqrt(n)).",
+    "ground_truth": "Won't compile \u2014 isPrime() declared void but returns boolean.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 10.0,
+      "overall": 9.75,
+      "feedback": "The code compiles and solves the problem correctly. The function `isPrime` correctly identifies prime numbers and handles edge cases. The approach is efficient as it checks divisibility up to the square root of the number."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.75,
+      "common_errors": "None",
+      "strengths": "The code is well-written, efficient, and correctly handles all specified requirements.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.8 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V25 scored 9.8 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V25 feedback contains: correct, efficient",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V25 scored 9.8 \u2014 missed syntax/compile error"
+    ],
+    "elapsed": 62.06,
+    "error": null
+  },
+  {
+    "id": "V26",
+    "category": "Fully Correct (Poor Style)",
+    "question_text": "Write a Java program that reads an integer from the user and prints whether it is a prime number or not. Handle edge cases: numbers less than 2 are not prime. Use an efficient approach (check divisibility up to sqrt(n)).",
+    "ground_truth": "Functionally correct. Crushed formatting, single-letter vars, no whitespace.",
+    "expected_min": 5.0,
+    "expected_max": 9.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and correctly identifies whether a number is prime or not. It handles edge cases and uses an efficient approach by checking divisibility up to the square root of the number."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows best practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [5.0, 9.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 60.36,
+    "error": null
+  },
+  {
+    "id": "V27",
+    "category": "Fully Correct",
+    "question_text": "Write a Java program that reads a string and counts the number of vowels and consonants in it. Ignore spaces, digits, and special characters \u2014 only count alphabetic characters. Print the counts in the format: 'Vowels: X, Consonants: Y'.",
+    "ground_truth": "Correct. Properly filters non-alpha chars and counts vowels/consonants.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It accurately counts vowels and consonants in a given string, ignoring spaces, digits, and special characters."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-structured, correctly implements the logic for counting vowels and consonants, and handles edge cases such as ignoring non-alphabetic characters.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 65.07,
+    "error": null
+  },
+  {
+    "id": "V28",
+    "category": "Partially Correct (Logic Bug)",
+    "question_text": "Write a Java program that reads a string and counts the number of vowels and consonants in it. Ignore spaces, digits, and special characters \u2014 only count alphabetic characters. Print the counts in the format: 'Vowels: X, Consonants: Y'.",
+    "ground_truth": "Bug: no isLetter check, so spaces/digits/special chars count as consonants.",
+    "expected_min": 3.0,
+    "expected_max": 6.5,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and solves the problem correctly. It accurately counts vowels and consonants in a given string, ignoring spaces, digits, and special characters. The output format is also correct."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows the requirements accurately, and handles edge cases effectively.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [3.0, 6.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V28 scored 9.5 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V28 feedback contains: correct"
+    ],
+    "elapsed": 61.25,
+    "error": null
+  },
+  {
+    "id": "V29",
+    "category": "Does Not Compile (Syntax Error)",
+    "question_text": "Write a Java program that reads a string and counts the number of vowels and consonants in it. Ignore spaces, digits, and special characters \u2014 only count alphabetic characters. Print the counts in the format: 'Vowels: X, Consonants: Y'.",
+    "ground_truth": "Won't compile \u2014 missing final closing brace for Main class.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It accurately counts vowels and consonants in a given string, ignoring spaces, digits, and special characters. The output format is also correct."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is well-structured, follows best practices, and handles edge cases effectively. It accurately counts vowels and consonants and prints the results in the correct format.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V29 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V29 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Compile Error): V29 scored 9.4 \u2014 missed syntax/compile error"
+    ],
+    "elapsed": 65.04,
+    "error": null
+  },
+  {
+    "id": "V30",
+    "category": "Wrong Language",
+    "question_text": "Write a Java program that reads a string and counts the number of vowels and consonants in it. Ignore spaces, digits, and special characters \u2014 only count alphabetic characters. Print the counts in the format: 'Vowels: X, Consonants: Y'.",
+    "ground_truth": "Python code. Logic is correct but wrong language.",
+    "expected_min": 0.0,
+    "expected_max": 0.0,
+    "scores": {
+      "completeness": 0.0,
+      "code_quality": 0.0,
+      "approach": 0.0,
+      "overall": 0.0,
+      "feedback": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java. Evaluation skipped and 0.0 score assigned."
+    },
+    "summary": {
+      "label": "Critical",
+      "avg_score": 0.0,
+      "common_errors": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java.",
+      "strengths": "None",
+      "weaknesses": "Submitted code is written in Python instead of requested Java.",
+      "recommendations": "Please rewrite and submit your solution in Java."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=0.0 is WITHIN expected range [0.0, 0.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 51.07,
+    "error": null
+  },
+  {
+    "id": "V31",
+    "category": "Fully Correct",
+    "question_text": "Write a Java program that reads two positive integers and prints their Greatest Common Divisor (GCD) using the Euclidean algorithm. The Euclidean algorithm repeatedly replaces the larger number with the remainder of dividing the larger by the smaller until one becomes zero.",
+    "ground_truth": "Correct Euclidean algorithm implementation.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 10.0,
+      "overall": 9.75,
+      "feedback": "The code compiles and correctly implements the Euclidean algorithm to find the GCD of two positive integers. The logic is sound and follows the expected approach."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.75,
+      "common_errors": "None",
+      "strengths": "The code is well-written, follows the Euclidean algorithm correctly, and handles edge cases appropriately.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.8 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 49.94,
+    "error": null
+  },
+  {
+    "id": "V32",
+    "category": "Runs But No Output",
+    "question_text": "Write a Java program that reads two positive integers and prints their Greatest Common Divisor (GCD) using the Euclidean algorithm. The Euclidean algorithm repeatedly replaces the larger number with the remainder of dividing the larger by the smaller until one becomes zero.",
+    "ground_truth": "Compiles and runs, but gcd() is never called. Main just reads input and exits.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 8.0,
+      "approach": 9.0,
+      "overall": 5.0,
+      "feedback": "The code compiles and solves the problem correctly. The Euclidean algorithm is implemented correctly in the `gcd` method. However, the `main` method does not call the `gcd` method and print the result."
+    },
+    "summary": {
+      "label": "Average",
+      "avg_score": 5.0,
+      "common_errors": "The `main` method does not call the `gcd` method and print the result.",
+      "strengths": "The Euclidean algorithm is implemented correctly. The code is well-structured and follows good coding practices.",
+      "weaknesses": "The `main` method is incomplete and does not produce any output.",
+      "recommendations": "Call the `gcd` method in the `main` method and print the result."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=5.0 is OUTSIDE expected range [1.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V32 feedback contains: correct"
+    ],
+    "elapsed": 63.59,
+    "error": null
+  },
+  {
+    "id": "V33",
+    "category": "Mismatched (Wrong Problem)",
+    "question_text": "Write a Java program that reads two positive integers and prints their Greatest Common Divisor (GCD) using the Euclidean algorithm. The Euclidean algorithm repeatedly replaces the larger number with the remainder of dividing the larger by the smaller until one becomes zero.",
+    "ground_truth": "Calculates and prints LCM, not GCD. Different computation entirely.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 3.0,
+      "code_quality": 5.0,
+      "approach": 4.0,
+      "overall": 4.0,
+      "feedback": "The code compiles and solves the problem correctly. However, it calculates the LCM instead of the GCD."
+    },
+    "summary": {
+      "label": "Good",
+      "avg_score": 4.0,
+      "common_errors": "Incorrect calculation of LCM instead of GCD.",
+      "strengths": "Correct implementation of the Euclidean algorithm, good code quality.",
+      "weaknesses": "Incorrect calculation of LCM.",
+      "recommendations": "Ensure the program calculates the GCD instead of the LCM."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=4.0 is WITHIN expected range [1.0, 4.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 53.9,
+    "error": null
+  },
+  {
+    "id": "V34",
+    "category": "Runs But Crashes (Stack Overflow)",
+    "question_text": "Write a Java program that reads two positive integers and prints their Greatest Common Divisor (GCD) using the Euclidean algorithm. The Euclidean algorithm repeatedly replaces the larger number with the remainder of dividing the larger by the smaller until one becomes zero.",
+    "ground_truth": "Infinite recursion \u2014 recursive call uses gcd(a, b) instead of gcd(b, a % b). StackOverflowError.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 1.0,
+      "code_quality": 3.0,
+      "approach": 4.0,
+      "overall": 2.5,
+      "feedback": "The code does not compile correctly. The recursive call in the gcd method is missing the base case for when the remainder is not zero. The correct base case should be `return gcd(b, a % b);` instead of `return gcd(a, b);`."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.5,
+      "common_errors": "Syntax error in the recursive call to gcd method.",
+      "strengths": "The code attempts to solve the problem using the Euclidean algorithm and handles user input correctly.",
+      "weaknesses": "The code does not compile due to a syntax error, preventing it from solving the problem.",
+      "recommendations": "Fix the syntax error in the recursive call to the gcd method."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=2.5 is WITHIN expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V34 feedback contains: correct"
+    ],
+    "elapsed": 65.68,
+    "error": null
+  },
+  {
+    "id": "V35",
+    "category": "Fully Correct",
+    "question_text": "Write a Java program that reads an array of integers and checks whether the array is sorted in strictly ascending order (each element must be strictly greater than the previous one). Print 'Sorted' or 'Not Sorted'.",
+    "ground_truth": "Correct. Uses strict < comparison between consecutive elements.",
+    "expected_min": 8.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It checks if the array is sorted in strictly ascending order and prints 'Sorted' or 'Not Sorted' accordingly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows good coding practices. It handles edge cases and logic bugs effectively.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.4 is WITHIN expected range [8.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 59.07,
+    "error": null
+  },
+  {
+    "id": "V36",
+    "category": "Partially Correct (Wrong Condition)",
+    "question_text": "Write a Java program that reads an array of integers and checks whether the array is sorted in strictly ascending order (each element must be strictly greater than the previous one). Print 'Sorted' or 'Not Sorted'.",
+    "ground_truth": "Bug: checks arr[i] >= arr[i-1] which checks for NON-DESCENDING (wrong direction). On descending arrays it says 'Sorted', on ascending it says 'Not Sorted'.",
+    "expected_min": 1.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.4,
+      "feedback": "The code compiles and solves the problem correctly. It checks if the array is sorted in strictly ascending order and prints 'Sorted' or 'Not Sorted' accordingly."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.4,
+      "common_errors": "None",
+      "strengths": "The code is correct, complete, and follows good coding practices. It handles edge cases and logic bugs effectively.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.4 is OUTSIDE expected range [1.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V36 scored 9.4 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V36 feedback contains: correct"
+    ],
+    "elapsed": 59.37,
+    "error": null
+  },
+  {
+    "id": "V37",
+    "category": "Does Not Compile (Typo)",
+    "question_text": "Write a Java program that reads an array of integers and checks whether the array is sorted in strictly ascending order (each element must be strictly greater than the previous one). Print 'Sorted' or 'Not Sorted'.",
+    "ground_truth": "Won't compile \u2014 'sorte' is used in println but only 'sorted' is declared.",
+    "expected_min": 0.0,
+    "expected_max": 4.0,
+    "scores": {
+      "completeness": 4.0,
+      "code_quality": 5.0,
+      "approach": 6.0,
+      "overall": 4.5,
+      "feedback": "The code compiles and solves the problem correctly. However, there is a typo in the print statement: 'System.out.println(sorte ? \"Sorted\" : \"Not Sorted\");' should be 'System.out.println(sorted ? \"Sorted\" : \"Not Sorted\");'."
+    },
+    "summary": {
+      "label": "Good",
+      "avg_score": 4.5,
+      "common_errors": "Typo in print statement",
+      "strengths": "Correct logic and approach",
+      "weaknesses": "Minor typo in print statement",
+      "recommendations": "Fix the typo in the print statement for full correctness."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=4.5 is OUTSIDE expected range [0.0, 4.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V37 feedback contains: correct"
+    ],
+    "elapsed": 62.25,
+    "error": null
+  },
+  {
+    "id": "V38",
+    "category": "Unattempted",
+    "question_text": "Write a Java program that reads an array of integers and checks whether the array is sorted in strictly ascending order (each element must be strictly greater than the previous one). Print 'Sorted' or 'Not Sorted'.",
+    "ground_truth": "Compiles, runs, no output, no logic. Completely unattempted.",
+    "expected_min": 0.0,
+    "expected_max": 2.0,
+    "scores": {
+      "completeness": 1.0,
+      "code_quality": 2.0,
+      "approach": 3.0,
+      "overall": 2.5,
+      "feedback": "The code does not compile due to an incomplete main method. The method should include logic to read an array and check if it is sorted. The current code only initializes a Scanner but does not proceed with the required logic."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.5,
+      "common_errors": "Incomplete main method, lack of logic to solve the problem.",
+      "strengths": "Correctly identifies the language as Java.",
+      "weaknesses": "Lacks the necessary logic to solve the problem and is incomplete.",
+      "recommendations": "Complete the main method with the required logic to read an array and check if it is sorted."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=2.5 is OUTSIDE expected range [0.0, 2.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 64.47,
+    "error": null
+  },
+  {
+    "id": "V39",
+    "category": "Fully Correct (Suboptimal)",
+    "question_text": "Given an array of integers nums and a target, return indices of the two numbers that add up to target. Assume exactly one solution exists.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Fully Correct (functionally) | Note = O(n\u00b2) brute force instead of the expected O(n) HashMap approach \u2014 correct output, suboptimal complexity, not a bug.",
+    "expected_min": 6.0,
+    "expected_max": 9.5,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.0,
+      "overall": 9.25,
+      "feedback": "The code compiles and solves the problem correctly. It uses a nested loop to find the indices of the two numbers that add up to the target."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.25,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.2 is WITHIN expected range [6.0, 9.5]"
+    },
+    "blind_spots": [],
+    "elapsed": 53.77,
+    "error": null
+  },
+  {
+    "id": "V40",
+    "category": "Fully Incorrect (Logic Bug)",
+    "question_text": "Reverse a singly linked list in place and return the new head.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Fully Incorrect (infinite/broken traversal) | Bug = curr.next = prev overwrites curr.next before advancing curr = curr.next, so curr immediately becomes prev \u2014 loop terminates after one iteration and only the head node gets processed. Missing the next = curr.next temp-storage step before reassignment.",
+    "expected_min": 1.0,
+    "expected_max": 5.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and solves the problem correctly. The linked list is reversed in place, and the new head is returned."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [1.0, 5.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V40 scored 9.5 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V40 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Pointer Overwrite): V40 scored 9.5 \u2014 missed linked list pointer overwrite"
+    ],
+    "elapsed": 48.61,
+    "error": null
+  },
+  {
+    "id": "V41",
+    "category": "Fully Incorrect (Wrong Algorithm)",
+    "question_text": "Given a string of ()[]{}, determine if the brackets are validly matched/nested.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Fully Incorrect | Bug = counts brackets instead of checking nesting order/type-matching with a stack. Passes trivial cases like '()' but wrongly accepts '([)]' and '}{' as valid since counts match.",
+    "expected_min": 1.0,
+    "expected_max": 4.5,
+    "scores": {
+      "completeness": 2.0,
+      "code_quality": 4.0,
+      "approach": 3.0,
+      "overall": 3.5,
+      "feedback": "The code does not correctly solve the problem. It counts the number of opening and closing brackets separately and checks if they are equal, which is not sufficient to determine if the brackets are validly matched. The code also does not handle nested brackets correctly."
+    },
+    "summary": {
+      "label": "Poor",
+      "avg_score": 2.0,
+      "common_errors": "Incorrect logic for checking bracket validity, failure to handle nested brackets.",
+      "strengths": "Correctly counts opening and closing brackets.",
+      "weaknesses": "Lacks proper logic for valid bracket matching, fails to handle nested brackets.",
+      "recommendations": "Implement a stack-based approach to correctly handle nested brackets and ensure valid matching."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=3.5 is WITHIN expected range [1.0, 4.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V41 feedback contains: correct"
+    ],
+    "elapsed": 58.82,
+    "error": null
+  },
+  {
+    "id": "V42",
+    "category": "Partially Correct (Init Bug)",
+    "question_text": "Given an integer array (may contain negatives), find the contiguous subarray with the largest sum and return that sum.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Partially Correct | Bug = maxSum initialized to 0 instead of Integer.MIN_VALUE (or nums[0]). Fails on all-negative arrays \u2014 e.g. [-3, -1, -7] should return -1, but this prints 0 since 0 never gets beaten by any negative running sum.",
+    "expected_min": 3.0,
+    "expected_max": 7.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and solves the problem correctly. It implements the Kadane's algorithm to find the maximum subarray sum efficiently."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows best practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [3.0, 7.0]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V42 scored 9.5 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V42 feedback contains: correct, efficient",
+      "\u26a0\ufe0f BLIND SPOT (0-Init): V42 scored 9.5 \u2014 missed 0-init bug on negative numbers"
+    ],
+    "elapsed": 47.88,
+    "error": null
+  },
+  {
+    "id": "V43",
+    "category": "Partially Correct (Missing Prerequisite)",
+    "question_text": "Given a list of intervals, merge all overlapping intervals and return the result.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Partially Correct | Bug = never sorts intervals by start time before merging, so the merge-adjacent-if-overlapping logic (which is itself correct) operates on unsorted data. On this exact input it outputs [1,3] [8,10] [2,6] [15,18] unmerged/wrong instead of the correct [1,6] [8,10] [15,18].",
+    "expected_min": 3.0,
+    "expected_max": 6.5,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and solves the problem correctly. It merges overlapping intervals as expected."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "The code is correct, efficient, and follows good coding practices.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [3.0, 6.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V43 scored 9.5 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V43 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Missing Step): V43 scored 9.5 \u2014 missed missing Arrays.sort() step"
+    ],
+    "elapsed": 47.3,
+    "error": null
+  },
+  {
+    "id": "V44",
+    "category": "Wrong Language",
+    "question_text": "Given coin denominations and a target amount, return the fewest coins needed to make that amount using dynamic programming, or -1 if impossible.",
+    "ground_truth": "Language = Python \u274c | Verdict = Invalid Submission \u2014 wrong language. Note: the DP logic itself is actually correct and would return 3.",
+    "expected_min": 0.0,
+    "expected_max": 0.0,
+    "scores": {
+      "completeness": 0.0,
+      "code_quality": 0.0,
+      "approach": 0.0,
+      "overall": 0.0,
+      "feedback": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java. Evaluation skipped and 0.0 score assigned."
+    },
+    "summary": {
+      "label": "Critical",
+      "avg_score": 0.0,
+      "common_errors": "\u26a0\ufe0f Language Mismatch: Submitted code was detected as Python, but expected Java.",
+      "strengths": "None",
+      "weaknesses": "Submitted code is written in Python instead of requested Java.",
+      "recommendations": "Please rewrite and submit your solution in Java."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=0.0 is WITHIN expected range [0.0, 0.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 46.56,
+    "error": null
+  },
+  {
+    "id": "V45",
+    "category": "Partially Correct (Logic Bug)",
+    "question_text": "Given a string, find the length of the longest substring without repeating characters.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Partially Correct | Bug = when a duplicate is found, only removes/advances left by one position instead of shrinking the window until the duplicate character is actually gone \u2014 should be a while (seen.contains(c)) loop, not a single if. Fails on inputs like 'abba': at the second 'b', only one character is evicted instead of shrinking past both 'a' and the first 'b', producing an inflated/wrong window size in some traces.",
+    "expected_min": 3.0,
+    "expected_max": 6.5,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and solves the problem correctly. It uses a sliding window approach with a HashSet to track unique characters, ensuring no duplicates in the current substring."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "Correct implementation of the sliding window algorithm, efficient use of HashSet for tracking unique characters, clear and readable code.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=9.5 is OUTSIDE expected range [3.0, 6.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f FALSE POSITIVE: V45 scored 9.5 \u2014 model may have missed the bug",
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V45 feedback contains: correct"
+    ],
+    "elapsed": 48.59,
+    "error": null
+  },
+  {
+    "id": "V46",
+    "category": "Mismatched (Wrong Traversal)",
+    "question_text": "Given the root of a binary tree, return its level-order traversal as a list of lists (one list per level), using BFS with a queue.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Mismatched \u2014 submission implements a recursive in-order DFS traversal that prints a flat string, not BFS level-order traversal returning a list of lists per level. Solves a related-but-different tree problem.",
+    "expected_min": 0.0,
+    "expected_max": 3.5,
+    "scores": {
+      "completeness": 0.0,
+      "code_quality": 0.0,
+      "approach": 0.0,
+      "overall": 0.0,
+      "feedback": "The submitted code does not compile and does not solve the problem correctly. The code contains a syntax error in the `main` method where it calls a non-existent method `inorder` instead of `levelOrder`. Additionally, the code does not implement the BFS algorithm to traverse the tree level-order."
+    },
+    "summary": {
+      "label": "Critical",
+      "avg_score": 0.0,
+      "common_errors": "Syntax error and missing method implementation",
+      "strengths": "None",
+      "weaknesses": "Non-compilable code, incorrect method call, missing BFS implementation",
+      "recommendations": "Fix the syntax error, implement the BFS algorithm, and ensure the method is called correctly."
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=0.0 is WITHIN expected range [0.0, 3.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V46 feedback contains: correct"
+    ],
+    "elapsed": 60.82,
+    "error": null
+  },
+  {
+    "id": "V47",
+    "category": "Fully Correct (Alternative Approach)",
+    "question_text": "Given the head of a linked list, determine if it has a cycle.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Fully Correct | Note = uses HashSet (O(n) space) instead of the 'expected' Floyd's cycle detection / two-pointer (O(1) space), but this is a completely valid, commonly-taught alternative solution \u2014 not a lesser or buggy one.",
+    "expected_min": 7.0,
+    "expected_max": 10.0,
+    "scores": {
+      "completeness": 10.0,
+      "code_quality": 9.5,
+      "approach": 8.5,
+      "overall": 9.5,
+      "feedback": "The code compiles and correctly identifies if a linked list has a cycle. It uses a HashSet to track visited nodes, which is an efficient approach."
+    },
+    "summary": {
+      "label": "Excellent",
+      "avg_score": 9.5,
+      "common_errors": "None",
+      "strengths": "Correct implementation, efficient approach, good code quality.",
+      "weaknesses": "None",
+      "recommendations": "None"
+    },
+    "verdict": {
+      "passed": true,
+      "reason": "overall_score=9.5 is WITHIN expected range [7.0, 10.0]"
+    },
+    "blind_spots": [],
+    "elapsed": 49.68,
+    "error": null
+  },
+  {
+    "id": "V48",
+    "category": "Fully Incorrect (Missing Key Step)",
+    "question_text": "Given an array of strings, group the anagrams together and print each group.",
+    "ground_truth": "Language = Java \u2705 | Verdict = Fully Incorrect | Bug = builds the grouping key from the unsorted characters (new String(chars) without Arrays.sort(chars) first), so anagrams like 'eat'/'tea'/'ate' get different keys and end up in separate groups instead of one. Output is 6 groups of 1 instead of the correct 3 groups: {eat,tea,ate}, {tan,nat}, {bat}.",
+    "expected_min": 1.0,
+    "expected_max": 4.5,
+    "scores": {
+      "completeness": 4.5,
+      "code_quality": 8.0,
+      "approach": 9.0,
+      "overall": 7.0,
+      "feedback": "The code compiles and solves the problem correctly. It groups anagrams together and prints each group. However, the key used for grouping is not sorted, which means that anagrams will not be correctly grouped. For example, 'eat' and 'tea' will be grouped together, but 'tan' and 'nat' will not be."
+    },
+    "summary": {
+      "label": "Good",
+      "avg_score": 7.0,
+      "common_errors": "None",
+      "strengths": "Correctly groups anagrams and prints each group. Good approach and code quality.",
+      "weaknesses": "Key used for grouping is not sorted, which means that anagrams will not be correctly grouped.",
+      "recommendations": "Sort the key used for grouping to ensure that anagrams are correctly grouped."
+    },
+    "verdict": {
+      "passed": false,
+      "reason": "overall_score=7.0 is OUTSIDE expected range [1.0, 4.5]"
+    },
+    "blind_spots": [
+      "\u26a0\ufe0f PRAISE ON BROKEN CODE: V48 feedback contains: correct",
+      "\u26a0\ufe0f BLIND SPOT (Missing Step): V48 scored 7.0 \u2014 missed missing Arrays.sort() step"
+    ],
+    "elapsed": 65.09,
     "error": null
   }
 ]

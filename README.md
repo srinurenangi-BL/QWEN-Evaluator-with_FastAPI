@@ -74,15 +74,11 @@ QWEN-Evaluator-with_FastAPI/
 │
 └── tests/
     ├── __init__.py              # Test package initializer
-    ├── test_data.py             # Batch 1: 18 structural variants test data
-    ├── test_data_batch2.py      # Batch 2: 20 multi-question test data
-    ├── test_runner.py           # Batch 1 automated test runner
-    ├── test_runner_batch2.py    # Batch 2 automated test runner
-    ├── test_report.md           # Batch 1 test results (18 variants)
-    ├── test_report_batch2.md    # Batch 2 test results (20 variants)
-    ├── model_behavior_profile.md    # Consolidated model behavior analysis
-    ├── raw_results.json         # Batch 1 raw API response data
-    └── raw_results_batch2.json  # Batch 2 raw API response data
+    ├── test_data.py             # Master test suite (all 48 controlled variants)
+    ├── test_runner.py           # Master automated test runner
+    ├── test_report.md           # Master automated test results (48 variants)
+    ├── model_behavior_profile.md# Consolidated model behavior analysis (48 variants)
+    └── raw_results.json         # Master raw API response data (48 variants)
 ```
 
 ---
@@ -137,104 +133,34 @@ Open **http://localhost:8000** in your browser for the Web UI.
 | `GET` | `/api/metrics` | Execution stats (total requests & running average time) |
 | `GET` | `/docs` | Swagger UI — interactive API documentation |
 
-### Example Request
-
-```bash
-curl -X POST http://localhost:8000/review \
-  -H "Content-Type: application/json" \
-  -d '{
-    "target_language": "Java",
-    "submissions": [
-      {
-        "question_text": "Write a program to find the second largest element in an array",
-        "code": "import java.util.Scanner;\npublic class Main {\n  public static void main(String[] args) {\n    int[] arr = {3, 1, 4, 1, 5, 9};\n    // ... solution code\n  }\n}"
-      }
-    ]
-  }'
-```
-
-### Example Response
-
-```json
-{
-  "individual_reviews": [
-    {
-      "question_text": "Write a program to find the second largest element...",
-      "correctness_feedback": "The code compiles and solves the problem correctly.",
-      "scores": {
-        "completeness_score": 10.0,
-        "code_quality_score": 9.5,
-        "approach_taken_score": 8.5,
-        "overall_score": 9.4
-      }
-    }
-  ],
-  "summary_review": {
-    "overall_average_score": 9.4,
-    "overall_quality_label": "Excellent",
-    "common_errors": "None",
-    "strengths": "...",
-    "weaknesses": "...",
-    "recommendations": "..."
-  },
-  "execution_metrics": {
-    "request_duration_seconds": 52.3,
-    "lang_detection_duration_seconds": 0.0,
-    "code_eval_duration_seconds": 51.8,
-    "total_requests_processed": 1,
-    "running_average_duration_seconds": 52.3
-  }
-}
-```
-
----
-
-## Environment Configuration (.env)
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `OLLAMA_MODEL` | `qwen2.5-coder:7b-instruct` | Ollama model name |
-| `LLM_TEMPERATURE` | `0.1` | Sampling temperature (lower = more deterministic) |
-| `LLM_TIMEOUT_SECONDS` | `300` | Maximum seconds to wait for LLM response |
-| `DEFAULT_TARGET_LANGUAGE` | `Java` | Default target programming language |
-
 ---
 
 ## Testing & Evaluation
 
-The project includes a comprehensive automated testing framework with **38 controlled test variants** across 2 batches:
+The project includes a comprehensive automated testing framework with **48 controlled test variants** across 16 problem contexts:
 
-### Batch 1 — Structural Variants (18 tests)
-Focused on a single problem (Second Largest Distinct Element) with 18 structural variants covering:
-syntax errors, infinite loops, runtime crashes, logic bugs, dead code, wrong language, poor style, and more.
+- **Structural & Syntax Variants (V1–V18):** Syntax errors, infinite loops, runtime crashes, logic bugs, dead code, wrong language, and poor style on array problems.
+- **Multi-Domain Variants (V19–V38):** Strings, prime numbers, vowel/consonant filtering, Euclidean GCD, and sorting checks.
+- **Classic Algorithm Variants (V39–V48):** Two Sum, Reverse Linked List, Valid Brackets, Kadane's Subarray, Merge Intervals, Coin Change DP, Longest Substring, Binary Tree Traversal, Cycle Detection, and Group Anagrams.
 
-**Result: 61.1% accuracy** (11/18 passed)
-
-### Batch 2 — Multi-Question Variants (20 tests)  
-Expanded to 5 different problem domains (Reverse String, Prime Check, Vowel Counter, GCD, Array Sort Check) with 4 variants each.
-
-**Result: 40.0% accuracy** (8/20 passed)
+**Master Benchmark Result: 41.7% accuracy** (20/48 passed)
 
 ### Running Tests
 
 ```bash
-# Run Batch 1 tests
-python -m tests.test_runner
-
-# Run Batch 2 tests
-python -m tests.test_runner_batch2
+# Run the complete master test suite (48 tests)
+python tests/test_runner.py
 ```
 
-> **Note:** Tests make live API calls to the QWEN evaluator. Ensure the server is running first.
+> **Note:** Tests make live API calls to the QWEN evaluator. Ensure the FastAPI server is running first.
 
 ### Test Reports & Documentation
 
 | Document | Location | Description |
 |----------|----------|-------------|
-| Batch 1 Test Report | [`tests/test_report.md`](tests/test_report.md) | Detailed results for 18 structural variants |
-| Batch 2 Test Report | [`tests/test_report_batch2.md`](tests/test_report_batch2.md) | Detailed results for 20 multi-question variants |
-| Model Behavior Profile | [`tests/model_behavior_profile.md`](tests/model_behavior_profile.md) | Consolidated strengths & blind spots analysis |
-| Master Evaluation Report | [`docs/MASTER_EVALUATION_REPORT.md`](docs/MASTER_EVALUATION_REPORT.md) | 3-Phase technical architecture & evaluation report |
+| Master Test Report | [`tests/test_report.md`](tests/test_report.md) | Comprehensive results for all 48 test variants |
+| Model Behavior Profile | [`tests/model_behavior_profile.md`](tests/model_behavior_profile.md) | Strengths & blind spots analysis across 48 cases |
+| Master Technical Report | [`docs/MASTER_EVALUATION_REPORT.md`](docs/MASTER_EVALUATION_REPORT.md) | 3-Phase technical architecture & evaluation report |
 
 ---
 
