@@ -166,9 +166,3 @@ python tests/test_runner.py
 | `old_code` | Dual-call architecture codebase |
 | `current_code` | Baseline single-pass prompt codebase |
 | `Updated_code` | Single-pass codebase with 48-case master test suite |
-
----
-
-## License
-
-This project is for internal evaluation and educational purposes.
