@@ -6,50 +6,51 @@ AI-powered code review, scoring, and analysis engine built with **FastAPI**, **O
 
 ## Overview
 
-The QWEN Code Evaluator is an automated code grading system that evaluates student submissions against problem statements. It uses a **Single-Pass Unified Prompt Architecture** — a consolidated LLM call that performs language detection, syntax analysis, logic evaluation, and scoring in a single inference pass.
+The QWEN Code Evaluator is an automated code grading system that evaluates student submissions against problem statements and expected criteria. It uses a **Single-Pass Unified Prompt Architecture** — a consolidated LLM inference pipeline that executes language detection, syntax analysis, logic evaluation, and scoring in a single call.
 
 ### Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                SINGLE-PASS UNIFIED PROMPT                    │
-│                                                              │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────────────────┐  │
-│  │ Language     │  │ Syntax &     │  │ Logic & Approach   │  │
-│  │ Detection    │──│ Compile Gate │──│ Scoring (0-10)     │  │
-│  │ Gate         │  │              │  │                    │  │
-│  └─────────────┘  └──────────────┘  └────────────────────┘  │
-│                                                              │
-│  5-Gate Deterministic Rubric:                                │
-│  1. Language Gate → 0.0 on mismatch                          │
-│  2. Syntax Gate  → completeness ≤ 2.0 on compile errors      │
-│  3. Execution Gate → caps infinite loops & dead code          │
-│  4. Logic Gate   → penalizes boundary/duplicate flaws         │
-│  5. Style Gate   → decouples formatting from correctness      │
-└──────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       SINGLE-PASS UNIFIED EVALUATION                        │
+│                                                                             │
+│  ┌──────────────────┐    ┌─────────────────────┐    ┌────────────────────┐  │
+│  │ Language Gate    │───>│ Syntax & Logic Gate │───>│ Score Rubric       │  │
+│  │ (Target vs Code) │    │ (Compile, Loops, BS)│    │ (0.0 – 10.0 Scale) │  │
+│  └──────────────────┘    └─────────────────────┘    └────────────────────┘  │
+│                                                                             │
+│  5-Gate Deterministic Rubric:                                               │
+│  1. Language Gate   → 0.0 immediately on language mismatch                  │
+│  2. Syntax Gate     → Completeness capped ≤ 2.0 on uncompilable syntax      │
+│  3. Execution Gate  → Infinite loops, recursion, and dead code capped ≤ 3.0 │
+│  4. Logic Gate      → Boundary, off-by-one, and edge cases scored 3.0–6.5   │
+│  5. Style Decouple  → Minified/compressed code gets full completeness (9+)  │
+│                       with deductions restricted to code quality only       │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Features
 
-- **Single-Pass Unified Evaluation**: Consolidated prompt performs language detection + code review in one LLM call
-- **5-Gate Deterministic Rubric**: Language, Syntax, Execution, Logic, and Style gates with enforced score ceilings
-- **Language Mismatch Detection**: Auto-rejects wrong-language submissions with 0.0 scores
-- **Glassmorphism Web Interface**: Apple Vision Pro styled UI with Dark/Light modes, SVG radial progress meters, and interactive popup modals
-- **Execution Metrics**: Real-time performance tracking — processed request count and running average response time
-- **Optimized Inference**: Model persistence (`keep_alive: 5m`), context window tuning (`num_ctx: 2048`, `num_predict: 450`), and async timeout safety (`300s`)
+- **Single-Pass Unified Evaluation**: Consolidated prompt performs language validation + code scoring in one LLM call.
+- **Flexible Payload Structure**: Supports discrete fields (`question_text`, `code`, `return_answer`, `specific_instructions`) with automatic alias normalization and flat payload support.
+- **5-Gate Deterministic Rubric**: Strict score boundaries preventing false 9+ scores on uncompilable or infinite-loop submissions.
+- **Automated Language Mismatch Handling**: Detects non-target languages (e.g. Python submitted for Java) and returns `0.0` with clear guidance.
+- **Glassmorphic Web Interface**: Modern Apple Vision Pro / macOS styled UI (`index.html`) with Dark/Light modes, SVG radial score meters, and interactive popup modals.
+- **Real-Time Execution Metrics**: Running statistics endpoint (`/api/metrics`) tracking total processed requests and running average latency.
+- **Performance Optimized**: Model persistence (`keep_alive: 5m`), context window tuning (`num_ctx: 2048`, `num_predict: 450`), and async timeout safety (`300s`).
 
 ---
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|-----------|
-| **Language** | Python 3.x |
-| **Web Framework** | FastAPI |
-| **Validation** | Pydantic v2 |
-| **LLM Runtime** | Ollama (local) |
-| **Model** | `qwen2.5-coder:7b-instruct` |
-| **Frontend** | Vanilla HTML/CSS/JS (Glassmorphism UI) |
+| Layer | Technology |
+|---|---|
+| **Backend Framework** | FastAPI (Python 3.10+) |
+| **Data Validation & Serialization** | Pydantic v2 |
+| **LLM Runtime Engine** | Ollama (Local) |
+| **Evaluation Model** | `qwen2.5-coder:7b-instruct` |
+| **Web UI** | Vanilla HTML5, Modern CSS (Glassmorphism), JavaScript |
+| **ASGI Web Server** | Uvicorn |
 
 ---
 
@@ -58,52 +59,61 @@ The QWEN Code Evaluator is an automated code grading system that evaluates stude
 ```
 QWEN-Evaluator-with_FastAPI/
 │
-├── main.py                     # FastAPI app, routes, Ollama client, metrics
-├── schemas.py                  # Pydantic request/response models & validation
-├── prompts.py                  # Unified evaluation prompt builder & language detection
+├── main.py                     # FastAPI app, routes, Ollama async client, telemetry
+├── schemas.py                  # Pydantic request/response models & alias normalizers
+├── prompts.py                  # Unified evaluation prompt builder & formatting utilities
 ├── requirements.txt            # Python dependencies
 ├── .env                        # Environment configuration
 ├── .gitignore                  # Git ignore rules
-├── app.log                     # Runtime application log (auto-generated)
+├── app.log                     # Application runtime log (auto-generated)
 │
 ├── templates/
-│   └── index.html              # Glassmorphic responsive frontend UI
+│   └── index.html              # Glassmorphic responsive web interface
 │
 └── tests/
-    ├── __init__.py              # Test package initializer
-    ├── test_data.py             # Master test suite (all 48 controlled variants)
-    ├── test_runner.py           # Master automated test runner
-    ├── test_report.md           # Master automated test results (48 variants)
-    ├── model_behavior_profile.md# Model behavior profile & empirical analysis
-    └── raw_results.json         # Master raw API response data (48 variants)
+    ├── __init__.py             # Test package marker
+    ├── test_data.py            # Master test suite (48 controlled test variants)
+    ├── test_runner.py          # Master automated test execution runner
+    ├── test_report.md          # Comprehensive test results across all 48 test variants
+    ├── model_behavior_profile.md # Empirical model strengths & blind spots analysis
+    └── raw_results.json        # Raw JSON API response archive (48 test cases)
 ```
 
 ---
 
-## Setup
+## Setup & Installation
 
 ### Prerequisites
 
-- **Python 3.10+**
-- **Ollama** installed and running — [Download Ollama](https://ollama.com)
+1. **Python 3.10+**
+2. **Ollama** installed and running — [Download Ollama](https://ollama.com)
 
-### Installation
+### 1. Clone the Repository
 
 ```bash
-# Clone the repository
 git clone https://github.com/srinurenangi-BL/QWEN-Evaluator-with_FastAPI.git
 cd QWEN-Evaluator-with_FastAPI
+```
 
-# Create and activate virtual environment
+### 2. Set Up Virtual Environment
+
+```bash
+# Windows
 python -m venv venv
-.\venv\Scripts\activate          # Windows
-# source venv/bin/activate       # macOS/Linux
+.\venv\Scripts\activate
 
-# Install dependencies
+# Linux / macOS
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Pull the model
+### 4. Pull the QWEN Coder Model
 
 ```bash
 ollama pull qwen2.5-coder:7b-instruct
@@ -111,58 +121,149 @@ ollama pull qwen2.5-coder:7b-instruct
 
 ---
 
-## Run
+## Running the Application
+
+Start the FastAPI server using Uvicorn:
 
 ```bash
 uvicorn main:app --reload --port 8000
 ```
 
-Open **http://localhost:8000** in your browser for the Web UI.
+- **Web Interface:** [http://localhost:8000](http://localhost:8000)
+- **Interactive Swagger Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Metrics Endpoint:** [http://localhost:8000/api/metrics](http://localhost:8000/api/metrics)
 
 ---
 
-## API Endpoints
+## API Documentation
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/` | Responsive Glassmorphism Web Interface |
-| `POST` | `/review` | Single-pass code review & scoring API |
-| `GET` | `/api/metrics` | Execution stats (total requests & running average time) |
-| `GET` | `/docs` | Swagger UI — interactive API documentation |
+### Endpoints
+
+| Method | Route | Description |
+|---|---|---|
+| `GET` | `/` | Serves the Glassmorphic Web UI |
+| `POST` | `/review` | Evaluates code submissions and returns scores & feedback |
+| `GET` | `/api/metrics` | Returns total requests and running average latency |
+| `GET` | `/docs` | Interactive Swagger API documentation |
 
 ---
 
-## Testing & Evaluation
+### Request Payload Specifications
 
-The project includes an automated testing framework with **48 controlled test variants** across 16 problem contexts:
+The `/review` endpoint supports both **batch submission** and **flat single submission** formats with automatic alias mapping.
 
-- **Structural & Syntax Variants (V1–V18):** Syntax errors, infinite loops, runtime crashes, logic bugs, dead code, wrong language, and poor style on array problems.
-- **Multi-Domain Variants (V19–V38):** Strings, prime numbers, vowel/consonant filtering, Euclidean GCD, and sorting checks.
-- **Classic Algorithm Variants (V39–V48):** Two Sum, Reverse Linked List, Valid Brackets, Kadane's Subarray, Merge Intervals, Coin Change DP, Longest Substring, Binary Tree Traversal, Cycle Detection, and Group Anagrams.
+#### Option A: Batch Submissions (Standard)
 
-**Master Benchmark Result: 41.7% accuracy** (20/48 passed within strict ground truth bounds)
+```json
+{
+  "target_language": "Java",
+  "submissions": [
+    {
+      "question_text": "Write a Java program to find the second largest distinct value in an array.",
+      "code": "import java.util.Scanner;\npublic class Main {\n  public static void main(String[] args) {\n    // solution code\n  }\n}",
+      "return_answer": "Print second largest distinct integer or Integer.MIN_VALUE if none",
+      "specific_instructions": "O(n) time complexity, no full array sorting"
+    }
+  ]
+}
+```
 
-### Running Tests
+#### Option B: Flat Single Submission (Flexible Aliases)
+
+```json
+{
+  "target_language": "Java",
+  "question": "Write a program to reverse a string in Java.",
+  "student_answer": "public class Main { public static void main(String[] args) { ... } }",
+  "expected_output": "Reversed string output",
+  "instructions": "Do not use StringBuilder.reverse()"
+}
+```
+
+---
+
+### Response Structure
+
+```json
+{
+  "individual_reviews": [
+    {
+      "question_text": "Write a Java program to find the second largest distinct value in an array.",
+      "correctness_feedback": "The code compiles and solves the problem correctly. It correctly identifies the second largest distinct value in the array.",
+      "scores": {
+        "completeness_score": 10.0,
+        "code_quality_score": 9.5,
+        "approach_taken_score": 8.5,
+        "overall_score": 9.5
+      }
+    }
+  ],
+  "summary_review": {
+    "overall_average_score": 9.5,
+    "overall_quality_label": "Excellent",
+    "common_errors": "None",
+    "strengths": "The code is well-written, follows best practices, and correctly solves the problem.",
+    "weaknesses": "None",
+    "recommendations": "None"
+  },
+  "execution_metrics": {
+    "request_duration_seconds": 32.65,
+    "lang_detection_duration_seconds": 0.0,
+    "code_eval_duration_seconds": 32.65,
+    "total_requests_processed": 1,
+    "running_average_duration_seconds": 32.65
+  }
+}
+```
+
+---
+
+## Automated Testing & Validation
+
+The codebase includes an automated test framework evaluating **48 controlled test cases** across 16 problem domains:
+
+- **V1 – V18:** Structural, compile, loop, and boundary variants for *Second Largest Element*.
+- **V19 – V38:** Multi-domain tests (*Reverse String*, *Prime Check*, *Vowel Counter*, *GCD*, *Array Sorted Check*).
+- **V39 – V48:** Classic Data Structures & Algorithms (*Two Sum*, *Linked List*, *Valid Brackets*, *Kadane's*, *Merge Intervals*, *Coin Change DP*, *Longest Substring*, *Tree Traversal*, *Cycle Detection*, *Group Anagrams*).
+
+### Run the Test Suite
 
 ```bash
-# Run the master test suite (48 tests)
+# Ensure server is running on port 8000
 python tests/test_runner.py
 ```
 
-### Evaluation Reports
+### Empirical Test Reports
 
-| Document | Location | Description |
-|----------|----------|-------------|
-| Master Test Report | [`tests/test_report.md`](tests/test_report.md) | Comprehensive results for all 48 test variants |
-| Model Behavior Profile | [`tests/model_behavior_profile.md`](tests/model_behavior_profile.md) | Strengths & blind spots analysis across 48 cases |
+| Report | Path | Description |
+|---|---|---|
+| **Master Test Report** | [`tests/test_report.md`](tests/test_report.md) | Individual score breakdowns, expected bounds, model feedback, and latency for all 48 test variants. |
+| **Model Behavior Profile** | [`tests/model_behavior_profile.md`](tests/model_behavior_profile.md) | Detailed analysis of confirmed model strengths and empirical blind spots. |
 
 ---
 
-## Branch Structure
+## Environment Variables (`.env`)
+
+| Variable | Default Value | Description |
+|---|---|---|
+| `OLLAMA_MODEL` | `qwen2.5-coder:7b-instruct` | Local Ollama model tag |
+| `LLM_TEMPERATURE` | `0.1` | Sampling temperature (0.1 for high determinism) |
+| `LLM_TIMEOUT_SECONDS` | `300` | Max duration per LLM request before async timeout |
+| `DEFAULT_TARGET_LANGUAGE` | `Java` | Default programming language |
+
+---
+
+## Git Branch Structure
 
 | Branch | Description |
-|--------|-------------|
-| `main` | Default branch (empty) |
-| `old_code` | Dual-call architecture codebase |
-| `current_code` | Baseline single-pass prompt codebase |
-| `Updated_code` | Single-pass codebase with 48-case master test suite |
+|---|---|
+| **`main`** | Default empty repository branch |
+| **`old_code`** | Original dual-pass LLM pipeline |
+| **`current_code`** | Single-pass prompt baseline |
+| **`Updated_code`** | Latest codebase with discrete variable schema, alias normalizers, and 48-case master test suite |
+
+---
+
+## License
+
+This project is developed for internal evaluation, benchmarking, and automated code grading.
